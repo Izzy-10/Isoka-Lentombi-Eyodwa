@@ -1,0 +1,146 @@
+css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card h1 {
+  text-align: center;
+  color: #667eea;
+  margin-bottom: 30px;
+  font-size: 32px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success {
+  color: #27ae60;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+  color: #666;
+}
+
+.link a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Profile Page */
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-
