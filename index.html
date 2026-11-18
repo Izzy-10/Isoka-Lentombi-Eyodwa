@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Match</title>
   <link rel="stylesheet" href="src/theme.css">
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       min-height: 100vh;
@@ -93,14 +94,74 @@
       height: 22px;
     }
 
-    .footer {
-      margin-top: 50px;
+    .divider {
       color: var(--text-faint);
-      font-size: 12px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .loading-msg {
+      display: none;
+      margin-top: 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .error-msg {
+      display: none;
+      margin-top: 16px;
+      color: #e74c3c;
+      font-size: 14px;
+      text-align: center;
     }
 
     .theme-switcher {
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .theme-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      padding: 0;
+    }
+
+    .theme-dot:hover {
+      transform: scale(1.2);
+    }
+
+    .theme-dot.active {
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+
+    .bottom-links {
+      margin-top: 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .bottom-links a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .bottom-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 40px;
+      color: var(--text-faint);
+      font-size: 12px;
     }
   </style>
 </head>
@@ -131,13 +192,19 @@
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
         Continue with Google
       </button>
+
       <div class="divider">— or —</div>
-      <button class="btn btn-primary" onclick="window.location.href='login.html'">
+
+      <button class="btn btn-primary" onclick="window.location.href='register.html'">
+        Create Account 👑
+      </button>
+
+      <button class="btn btn-secondary" onclick="window.location.href='login.html'">
         Login with Email 📧
       </button>
     </div>
 
-    <div class="error-msg" id="loadingMsg">⏳ Signing you in...</div>
+    <div class="loading-msg" id="loadingMsg">⏳ Signing you in...</div>
     <div class="error-msg" id="errorMsg"></div>
 
     <div class="theme-switcher">
@@ -148,13 +215,17 @@
       <button class="theme-dot" style="background:#5B8DEF" data-key="dark" title="Dark"></button>
     </div>
 
+    <div class="bottom-links">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+
     <div class="footer">
       Love Match &copy; 2026 &nbsp;|&nbsp; Made with ❤️ in Mzansi
     </div>
   </div>
 
   <script type="module">
-    import { applyTheme, getTheme, setTheme, THEMES } from './src/theme.js';
+    import { applyTheme, getTheme, setTheme } from './src/theme.js';
     applyTheme(getTheme());
 
     document.querySelectorAll('.theme-dot').forEach(btn => {
@@ -180,8 +251,12 @@
     document.getElementById('googleBtn').addEventListener('click', async () => {
       const loading = document.getElementById('loadingMsg');
       const errorMsg = document.getElementById('errorMsg');
+      const btn = document.getElementById('googleBtn');
+
       loading.style.display = 'block';
       errorMsg.style.display = 'none';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
 
       try {
         const result = await signInWithPopup(auth, provider);
@@ -201,15 +276,4 @@
           window.location.href = 'profile.html';
         } else {
           const data = userSnap.data();
-          window.location.href = data.profileComplete ? 'match.html' : 'profile.html';
-        }
-      } catch (error) {
-        loading.style.display = 'none';
-        errorMsg.style.display = 'block';
-        errorMsg.textContent = 'Sign in failed: ' + error.message;
-      }
-    });
-  </script>
-
-</body>
-</html>
+          window.location.href = data.profileComplete ? 'match.html' : 
