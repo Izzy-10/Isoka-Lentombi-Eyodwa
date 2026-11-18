@@ -41,7 +41,7 @@
     }
 
     .logo h1 {
-      font-size: 36px;
+      font-size: 32px;
       color: #FFD700;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -73,7 +73,9 @@
       text-transform: uppercase;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
       width: 100%;
       padding: 14px 16px;
       background: #0A0908;
@@ -85,13 +87,26 @@
       transition: all 0.3s;
     }
 
-    .form-group input:focus {
+    .form-group select option {
+      background: #17110A;
+      color: #FFF8E1;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
       outline: none;
       border-color: #FFD700;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
     }
 
-    .form-group input::placeholder {
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
       color: #5a4a2a;
     }
 
@@ -120,30 +135,17 @@
       box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
     }
 
-    .btn-primary:active {
-      transform: translateY(0);
+    .btn-secondary {
+      background: transparent;
+      color: #FFD700;
+      border: 2px solid #FFD700;
+      margin-top: 10px;
     }
 
-    .divider {
-      text-align: center;
-      margin: 20px 0;
-      color: #C9A44C;
-      font-size: 13px;
-      position: relative;
+    .btn-secondary:hover {
+      background: #FFD700;
+      color: #0A0908;
     }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 40%;
-      height: 1px;
-      background: #C9A44C;
-    }
-
-    .divider::before { left: 0; }
-    .divider::after { right: 0; }
 
     .link {
       text-align: center;
@@ -170,6 +172,13 @@
       text-align: center;
     }
 
+    .success {
+      color: #51cf66;
+      font-size: 13px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
     .forgot {
       text-align: right;
       margin-top: 8px;
@@ -186,6 +195,81 @@
       color: #FFD700;
     }
 
+    /* AVATAR UPLOAD */
+    .avatar-upload {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .avatar-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #FFD700;
+      object-fit: cover;
+      margin: 0 auto 10px;
+      display: block;
+      background: #0A0908;
+      cursor: pointer;
+      font-size: 50px;
+      line-height: 100px;
+    }
+
+    .avatar-upload input {
+      display: none;
+    }
+
+    .avatar-upload label {
+      color: #C9A44C;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .avatar-upload label:hover {
+      color: #FFD700;
+    }
+
+    /* ROW LAYOUT */
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    /* INTERESTS TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border: 2px solid #C9A44C;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #C9B78A;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tag.selected {
+      background: #FFD700;
+      color: #0A0908;
+      border-color: #FFD700;
+      font-weight: bold;
+    }
+
+    .tag:hover {
+      border-color: #FFD700;
+      color: #FFD700;
+    }
+
     /* PAGE SWITCHING */
     .page {
       display: none;
@@ -193,6 +277,21 @@
 
     .page.active {
       display: block;
+    }
+
+    /* SCROLLABLE CARD */
+    .card.scroll {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .card.scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .card.scroll::-webkit-scrollbar-thumb {
+      background: #C9A44C;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -249,81 +348,4 @@
 
         <div class="form-group">
           <label>Email</label>
-          <input type="email" id="regEmail" placeholder="Enter your email">
-        </div>
-
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="regPassword" placeholder="Create a password">
-        </div>
-
-        <div class="form-group">
-          <label>Confirm Password</label>
-          <input type="password" id="regConfirm" placeholder="Repeat your password">
-        </div>
-
-        <div class="error" id="registerError"></div>
-
-        <button class="btn btn-primary" onclick="handleRegister()">Create Account</button>
-
-        <div class="link">
-          Already have an account?
-          <a onclick="showPage('loginPage')">Login here</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- FORGOT PASSWORD PAGE -->
-    <div class="page" id="forgotPage">
-      <div class="card">
-        <div class="logo">
-          <span class="crown">🔑</span>
-          <h1>Reset</h1>
-          <p>We will send you a link</p>
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="forgotEmail" placeholder="Enter your email">
-        </div>
-
-        <div class="error" id="forgotError"></div>
-
-        <button class="btn btn-primary" onclick="handleForgot()">Send Reset Link</button>
-
-        <div class="link">
-          <a onclick="showPage('loginPage')">Back to Login</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-
-    function handleLogin() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const error = document.getElementById('loginError');
-
-      if (!email || !password) {
-        error.textContent = 'Please fill in all fields.';
-        return;
-      }
-
-      if (!email.includes('@')) {
-        error.textContent = 'Please enter a valid email.';
-        return;
-      }
-
-      error.textContent = '';
-      alert('Login successful! Profile page coming next.');
-    }
-
-    function handleRegister() {
-      const name = document.getElementById('regName').value.trim();
-      const email = document.getElementById('regEmail').
+          
