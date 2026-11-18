@@ -28,7 +28,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .splash .crown {
+    .crown {
       font-size: 80px;
       display: block;
       margin-bottom: 20px;
@@ -41,27 +41,33 @@
       100% { transform: scale(1); }
     }
 
-    .splash h1 {
+    h1 {
       font-size: 42px;
       color: #FFD700;
       letter-spacing: 5px;
       text-transform: uppercase;
       margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(255,215,0,0.5);
     }
 
-    .splash p {
+    .subtitle {
       color: #C9B78A;
       font-size: 16px;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
       letter-spacing: 1px;
     }
 
-    .splash .tagline {
-      color: #5a4a2a;
-      font-size: 13px;
-      margin-bottom: 40px;
-      font-style: italic;
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 45px;
+      flex-wrap: wrap;
     }
+
+    .feature { text-align: center; color: #C9B78A; }
+    .feature .f-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+    .feature span { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
 
     .btn-group {
       display: flex;
@@ -80,11 +86,27 @@
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      text-decoration: none;
-      display: block;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-google {
+      background: #fff;
+      color: #0A0908;
+    }
+    .btn-google:hover {
+      background: #f0f0f0;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+    }
+
+    .btn-google img {
+      width: 22px;
+      height: 22px;
     }
 
     .btn-gold {
@@ -97,48 +119,31 @@
       box-shadow: 0 10px 30px rgba(255,215,0,0.4);
     }
 
-    .btn-outline {
-      background: transparent;
-      color: #FFD700;
-      border: 2px solid #FFD700;
-    }
-    .btn-outline:hover {
-      background: #FFD700;
-      color: #0A0908;
-      transform: translateY(-3px);
-    }
-
     .divider {
       color: #5a4a2a;
       font-size: 13px;
-      margin: 5px 0;
       text-align: center;
     }
 
-    .features {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 45px;
-      flex-wrap: wrap;
+    .loading {
+      display: none;
+      color: #FFD700;
+      font-size: 14px;
+      margin-top: 15px;
     }
 
-    .feature {
+    .error-msg {
+      display: none;
+      color: #ff6b6b;
+      font-size: 13px;
+      margin-top: 10px;
       text-align: center;
-      color: #C9B78A;
     }
-
-    .feature .f-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-    .feature span { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
 
     .footer {
       margin-top: 50px;
       color: #2a1f0f;
       font-size: 12px;
-    }
-
-    .glow {
-      text-shadow: 0 0 20px rgba(255,215,0,0.5);
     }
   </style>
 </head>
@@ -146,8 +151,8 @@
 
   <div class="splash">
     <span class="crown">👑</span>
-    <h1 class="glow">Love Match</h1>
-    <p>Find your royal match in Mzansi 🇿🇦</p>
+    <h1>Love Match</h1>
+    <p class="subtitle">Find your royal match in Mzansi 🇿🇦</p>
 
     <div class="features">
       <div class="feature">
@@ -165,15 +170,71 @@
     </div>
 
     <div class="btn-group">
-      <a class="btn btn-gold" href="login.html">Login 👑</a>
+      <button class="btn btn-google" id="googleBtn" onclick="signInWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Continue with Google
+      </button>
       <div class="divider">— or —</div>
-      <a class="btn btn-outline" href="register.html">Create Account ✨</a>
+      <button class="btn btn-gold" onclick="window.location.href='login.html'">
+        Login with Email 📧
+      </button>
     </div>
+
+    <div class="loading" id="loadingMsg">⏳ Signing you in...</div>
+    <div class="error-msg" id="errorMsg"></div>
 
     <div class="footer">
       Love Match &copy; 2026 &nbsp;|&nbsp; Made with ❤️ in Mzansi
     </div>
   </div>
+
+  <script type="module">
+    import { auth, db, provider, signInWithPopup, onAuthStateChanged, doc, setDoc, getDoc } from './firebase.js';
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = 'match.html';
+      }
+    });
+
+    window.signInWithGoogle = async function() {
+      const loading = document.getElementById('loadingMsg');
+      const errorMsg = document.getElementById('errorMsg');
+      loading.style.display = 'block';
+      errorMsg.style.display = 'none';
+
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            createdAt: new Date().toISOString(),
+            profileComplete: false
+          });
+          window.location.href = 'profile.html';
+        } else {
+          const data = userSnap.data();
+          if (!data.profileComplete) {
+            window.location.href = 'profile.html';
+          } else {
+            window.location.href = 'match.html';
+          }
+        }
+      } catch (error) {
+        loading.style.display = 'none';
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Sign in failed: ' + error.message;
+      }
+    }
+  </script>
 
 </body>
 </html>
