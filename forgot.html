@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Match - Forgot Password</title>
+  <link rel="stylesheet" href="src/theme.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo .icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .logo h1 {
+      font-size: 26px;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .logo p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 30px 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-box .icon {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .success-box h2 {
+      color: var(--gold);
+      font-size: 22px;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .success-box p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .success-box .email-sent {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--gold);
+      font-size: 14px;
+      margin-bottom: 24px;
+      word-break: break-all;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .link a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .back-link a {
+      color: var(--text-faint);
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      color: var(--text-muted);
+    }
+
+    .resend-btn {
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: inherit;
+    }
+
+    .resend-btn:disabled {
+      color: var(--text-faint);
+      cursor: not-allowed;
+      text-decoration: none;
+    }
+
+    .countdown {
+      color: var(--text-faint);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div id="formSection">
+      <div class="logo">
+        <span class="icon">🔑</span>
+        <h1>Forgot Password</h1>
+        <p>No stress. Enter your email and we will send you a link to reset your password.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input class="input" type="email" id="resetEmail" placeholder="your@email.com">
+      </div>
+
+      <div class="error-msg" id="resetError"></div>
+
+      <button class="btn btn-primary" id="resetBtn" onclick="handleReset()">
+        Send Reset Link 📧
+      </button>
+
+      <div class="link">
+        Remembered it? <a href="login.html">Back to Login</a>
+      </div>
+
+      <div class="back-link">
+        <a href="index.html">← Back to home</a>
+      </div>
+    </div>
+
+    <div class="success-box" id="successSection">
+      <span class="icon">📬</span>
+      <h2>Check Your Email</h2>
+      <p>We sent a password reset link to:</p>
+      <div class="email-sent" id="sentEmailDisplay"></div>
+      <p>Open the link in that email to reset your password. Check your spam folder if you don't see it.</p>
+
+      <div class="countdown" id="countdownText"></div>
+      <button class="resend-btn" id="resendBtn" onclick="handleResend()" disabled>
+        Resend Email
+      </button>
+
+      <br><br>
+
+      <button class="btn btn-primary" onclick="window.location.href='login.html'">
+        Back to Login 👑
+      </button>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { applyTheme, getTheme } from './src/theme.js';
+    applyTheme(getTheme());
+
+    import { auth } from './firebase.js';
+    import {
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    let countdownInterval;
+
+    function startCountdown(seconds) {
+      const resendBtn = document.getElementById('resendBtn');
+      const countdownText = document.getElementById('countdownText');
+      let remaining = seconds;
+
+      resendBtn.disabled = true;
+      countdownText.textContent = 'You can resend in ' + remaining + 's';
+
+      countdownInterval = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(countdownInterval);
+          resendBtn.disabled = false;
+          countdownText.textContent = '';
+        } else {
+          countdownText.textContent = 'You can resend in ' + remaining + 's';
+        }
+      }, 1000);
+    }
+
+    async function sendReset(email) {
+      await sendPasswordResetEmail(auth, email);
+    }
+
+    window.handleReset = async function () {
+      const email = document.getElementById('resetEmail').value.trim();
+      const errorEl = document.getElementById('resetError');
+      const btn = document.getElementById('resetBtn');
+
+      errorEl.style.display = 'none';
+
+      if (!email) {
+        errorEl.textContent = 'Please enter your email address.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      if (!email.includes('@')) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        await sendReset(email);
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('successSection').style.display = 'block';
+        document.getElementById('sentEmailDisplay').textContent = email;
+        startCountdown(60);
+      } catch (err) {
+        btn.textContent = 'Send Reset Link 📧';
+        btn.disabled = false;
+        errorEl.style.display = 'block';
+
+        if (err.code === 'auth/user-not-found') {
+          errorEl.textContent = 'No account found with this email.';
+        } else if (err.code === 'auth/invalid-email') {
+          errorEl.textContent = 'That email address is not valid.';
+        } else if (err.code === 'auth/too-many-requests') {
+          errorEl.textContent = 'Too many attempts. Please wait a moment and try again.';
+        } else {
+          errorEl.textContent = err.message;
+        }
+      }
+    };
+
+    window.handleResend = async function () {
+      const email = document.getElementById('sentEmailDisplay').textContent;
+      const resendBtn = document.getElementById('resendBtn');
+      const countdownText = document.getElementById('countdownText');
+
+      resendBtn.disabled = true;
+      countdownText.textContent = 'Sending...';
+
+      try {
+        await sendReset(email);
+        startCountdown(60);
+      } catch (err) {
+        countdownText.textContent = 'Failed to resend. Try again later.';
+        resendBtn.disabled = false;
+      }
+    };
+  </script>
+
+</body>
+</html>
