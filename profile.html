@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Match - Profile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0A0908;
+      color: #FFF8E1;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: #17110A;
+      border-bottom: 2px solid #C9A44C;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
+    .nav-icons { display: flex; gap: 18px; }
+    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+    .nav-icons span:hover { transform: scale(1.2); }
+
+    .content {
+      display: flex;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .card {
+      background: #17110A;
+      border: 2px solid #C9A44C;
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(255,215,0,0.1);
+    }
+
+    .section-title {
+      color: #FFD700;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #C9A44C;
+    }
+
+    .avatar-wrap { text-align: center; margin-bottom: 25px; }
+    .avatar-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid #FFD700;
+      display: block;
+      margin: 0 auto 10px;
+      font-size: 55px;
+      line-height: 110px;
+      text-align: center;
+      background: #0A0908;
+      cursor: pointer;
+      overflow: hidden;
+      object-fit: cover;
+    }
+    .avatar-wrap input { display: none; }
+    .avatar-wrap span {
+      color: #C9A44C;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .avatar-wrap span:hover { color: #FFD700; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #C9B78A;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 15px;
+      background: #0A0908;
+      color: #FFF8E1;
+      border: 2px solid #C9A44C;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .form-group select option { background: #17110A; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 15px rgba(255,215,0,0.2);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #5a4a2a; }
+
+    .row { display: flex; gap: 15px; }
+    .row .form-group { flex: 1; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .tag {
+      padding: 6px 14px;
+      border: 2px solid #C9A44C;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #C9B78A;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .tag.selected { background: #FFD700; color: #0A0908; border-color: #FFD700; font-weight: bold; }
+    .tag:hover { border-color: #FFD700; color: #FFD700; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .btn-gold { background: #FFD700; color: #0A0908; }
+    .btn-gold:hover {
+      background: #FFC200;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+    }
+
+    .msg-success { color: #51cf66; font-size: 13px; margin-top: 10px; text-align: center; }
+    .msg-error { color: #ff6b6b; font-size: 13px; margin-top: 10px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h2>👑 Love Match</h2>
+    <div class="nav-icons">
+      <span onclick="window.location.href='match.html'" title="Match">🔥</span>
+      <span onclick="window.location.href='chat.html'" title="Chat">💬</span>
+      <span title="Profile">👤</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+
+      <div class="section-title">My Profile</div>
+
+      <div class="avatar-wrap">
+        <div class="avatar-circle" id="avatarPreview" onclick="document.getElementById('avatarInput').click()">🧑</div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
+        <span onclick="document.getElementById('avatarInput').click()">Change photo</span>
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="profileName" placeholder="Your name">
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" id="profileAge" placeholder="Age" min="18" max="99">
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="profileGender">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="profileLocation" placeholder="e.g. Durban, KZN">
+      </div>
+
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea id="profileBio" placeholder="Tell people about yourself..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Looking For</label>
+        <select id="profileLooking">
+          <option value="">Select</option>
+          <option value="relationship">Serious Relationship</option>
+          <option value="casual">Casual Dating</option>
+          <option value="friendship">Friendship</option>
+          <option value="unsure">Not Sure Yet</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Interests</label>
+        <div class="tags" id="interestTags">
+          <span class="tag" onclick="toggleTag(this)">🎵 Music</span>
+          <span class="tag" onclick="toggleTag(this)">⚽ Sport</span>
+          <span class="tag" onclick="toggleTag(this)">🍕 Food</span>
+          <span class="tag" onclick="toggleTag(this)">✈️ Travel</span>
+          <span class="tag" onclick="toggleTag(this)">🎮 Gaming</span>
+          <span class="tag" onclick="toggleTag(this)">📚 Reading</span>
+          <span class="tag" onclick="toggleTag(this)">🎨 Art</span>
+          <span class="tag" onclick="toggleTag(this)">💪 Fitness</span>
+          <span class="tag" onclick="toggleTag(this)">
