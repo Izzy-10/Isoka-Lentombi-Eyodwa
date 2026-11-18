@@ -5,25 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Match</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: #0A0908;
       color: #FFF8E1;
+      min-height: 100vh;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .centered {
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
       padding: 20px;
     }
 
@@ -32,52 +30,32 @@
       border: 2px solid #C9A44C;
       border-radius: 20px;
       padding: 40px 30px;
-      box-shadow: 0 10px 40px rgba(255, 215, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(255,215,0,0.1);
     }
 
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
+    .card.scroll {
+      max-height: 92vh;
+      overflow-y: auto;
     }
 
-    .logo h1 {
-      font-size: 32px;
-      color: #FFD700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
+    .card.scroll::-webkit-scrollbar { width: 4px; }
+    .card.scroll::-webkit-scrollbar-thumb { background: #C9A44C; border-radius: 4px; }
 
-    .logo p {
-      color: #C9B78A;
-      font-size: 13px;
-      margin-top: 5px;
-      letter-spacing: 1px;
-    }
+    .logo { text-align: center; margin-bottom: 30px; }
+    .logo .icon { font-size: 42px; display: block; margin-bottom: 8px; }
+    .logo h1 { font-size: 32px; color: #FFD700; letter-spacing: 3px; text-transform: uppercase; }
+    .logo p { color: #C9B78A; font-size: 13px; margin-top: 5px; }
 
-    .crown {
-      font-size: 40px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #C9B78A;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 7px; color: #C9B78A; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 14px 16px;
+      padding: 13px 15px;
       background: #0A0908;
       color: #FFF8E1;
       border: 2px solid #C9A44C;
@@ -87,167 +65,55 @@
       transition: all 0.3s;
     }
 
-    .form-group select option {
-      background: #17110A;
-      color: #FFF8E1;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
+    .form-group select option { background: #17110A; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
       outline: none;
       border-color: #FFD700;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      box-shadow: 0 0 15px rgba(255,215,0,0.2);
     }
 
     .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #5a4a2a;
-    }
+    .form-group textarea::placeholder { color: #5a4a2a; }
+
+    .row { display: flex; gap: 15px; }
+    .row .form-group { flex: 1; }
 
     .btn {
       width: 100%;
       padding: 14px;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
       letter-spacing: 2px;
       text-transform: uppercase;
-    }
-
-    .btn-primary {
-      background: #FFD700;
-      color: #0A0908;
-      margin-top: 10px;
-    }
-
-    .btn-primary:hover {
-      background: #FFC200;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: #FFD700;
-      border: 2px solid #FFD700;
-      margin-top: 10px;
-    }
-
-    .btn-secondary:hover {
-      background: #FFD700;
-      color: #0A0908;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 20px;
-      color: #C9B78A;
-      font-size: 14px;
-    }
-
-    .link a {
-      color: #FFD700;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .link a:hover {
-      text-decoration: underline;
-    }
-
-    .error {
-      color: #ff6b6b;
-      font-size: 13px;
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .success {
-      color: #51cf66;
-      font-size: 13px;
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .forgot {
-      text-align: right;
       margin-top: 8px;
     }
 
-    .forgot a {
-      color: #C9A44C;
-      font-size: 12px;
-      text-decoration: none;
-      cursor: pointer;
-    }
+    .btn-gold { background: #FFD700; color: #0A0908; }
+    .btn-gold:hover { background: #FFC200; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,215,0,0.4); }
 
-    .forgot a:hover {
-      color: #FFD700;
-    }
+    .btn-outline { background: transparent; color: #FFD700; border: 2px solid #FFD700; }
+    .btn-outline:hover { background: #FFD700; color: #0A0908; }
 
-    /* AVATAR UPLOAD */
-    .avatar-upload {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+    .link { text-align: center; margin-top: 18px; color: #C9B78A; font-size: 14px; }
+    .link a { color: #FFD700; text-decoration: none; font-weight: bold; cursor: pointer; }
+    .link a:hover { text-decoration: underline; }
 
-    .avatar-preview {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #FFD700;
-      object-fit: cover;
-      margin: 0 auto 10px;
-      display: block;
-      background: #0A0908;
-      cursor: pointer;
-      font-size: 50px;
-      line-height: 100px;
-    }
+    .forgot { text-align: right; margin-top: 6px; }
+    .forgot a { color: #C9A44C; font-size: 12px; cursor: pointer; }
+    .forgot a:hover { color: #FFD700; }
 
-    .avatar-upload input {
-      display: none;
-    }
+    .msg-error { color: #ff6b6b; font-size: 13px; margin-top: 8px; text-align: center; }
+    .msg-success { color: #51cf66; font-size: 13px; margin-top: 8px; text-align: center; }
 
-    .avatar-upload label {
-      color: #C9A44C;
-      font-size: 12px;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .avatar-upload label:hover {
-      color: #FFD700;
-    }
-
-    /* ROW LAYOUT */
-    .row {
-      display: flex;
-      gap: 15px;
-    }
-
-    .row .form-group {
-      flex: 1;
-    }
-
-    /* INTERESTS TAGS */
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 5px;
-    }
-
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
     .tag {
       padding: 6px 14px;
       border: 2px solid #C9A44C;
@@ -257,95 +123,109 @@
       cursor: pointer;
       transition: all 0.3s;
     }
+    .tag.selected { background: #FFD700; color: #0A0908; border-color: #FFD700; font-weight: bold; }
+    .tag:hover { border-color: #FFD700; color: #FFD700; }
 
-    .tag.selected {
-      background: #FFD700;
-      color: #0A0908;
-      border-color: #FFD700;
-      font-weight: bold;
-    }
-
-    .tag:hover {
-      border-color: #FFD700;
-      color: #FFD700;
-    }
-
-    /* PAGE SWITCHING */
-    .page {
-      display: none;
-    }
-
-    .page.active {
+    .avatar-wrap { text-align: center; margin-bottom: 20px; }
+    .avatar-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #FFD700;
+      object-fit: cover;
       display: block;
+      margin: 0 auto 8px;
+      font-size: 52px;
+      line-height: 100px;
+      text-align: center;
+      background: #0A0908;
+      cursor: pointer;
+    }
+    .avatar-wrap input { display: none; }
+    .avatar-wrap span { color: #C9A44C; font-size: 12px; cursor: pointer; text-decoration: underline; }
+    .avatar-wrap span:hover { color: #FFD700; }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: #17110A;
+      border-bottom: 2px solid #C9A44C;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
+    .nav-icons { display: flex; gap: 18px; }
+    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+    .nav-icons span:hover { transform: scale(1.2); }
+
+    /* MATCH PAGE */
+    .match-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
 
-    /* SCROLLABLE CARD */
-    .card.scroll {
-      max-height: 90vh;
-      overflow-y: auto;
+    .match-card {
+      width: 100%;
+      max-width: 380px;
+      background: #17110A;
+      border: 2px solid #C9A44C;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(255,215,0,0.15);
+      position: relative;
+      transition: transform 0.3s;
     }
 
-    .card.scroll::-webkit-scrollbar {
-      width: 4px;
+    .match-card-photo {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+      background: #0A0908;
     }
 
-    .card.scroll::-webkit-scrollbar-thumb {
-      background: #C9A44C;
-      border-radius: 4px;
+    .match-card-info { padding: 20px; }
+    .match-card-info h2 { color: #FFD700; font-size: 22px; margin-bottom: 4px; }
+    .match-card-info p { color: #C9B78A; font-size: 14px; margin-bottom: 10px; }
+
+    .match-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .match-card-tags span {
+      padding: 4px 12px;
+      background: #0A0908;
+      border: 1px solid #C9A44C;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #C9B78A;
     }
-  </style>
-</head>
-<body>
 
-  <div class="container">
+    .action-btns {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+    }
 
-    <!-- LOGIN PAGE -->
-    <div class="page active" id="loginPage">
-      <div class="card">
-        <div class="logo">
-          <span class="crown">👑</span>
-          <h1>Love Match</h1>
-          <p>Find your royal match</p>
-        </div>
+    .action-btn {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="loginEmail" placeholder="Enter your email">
-        </div>
+    .btn-skip {
 
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" placeholder="Enter your password">
-          <div class="forgot">
-            <a onclick="showPage('forgotPage')">Forgot password?</a>
-          </div>
-        </div>
 
-        <div class="error" id="loginError"></div>
-
-        <button class="btn btn-primary" onclick="handleLogin()">Login</button>
-
-        <div class="link">
-          Don't have an account?
-          <a onclick="showPage('registerPage')">Register here</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- REGISTER PAGE -->
-    <div class="page" id="registerPage">
-      <div class="card">
-        <div class="logo">
-          <span class="crown">👑</span>
-          <h1>Join Us</h1>
-          <p>Create your account</p>
-        </div>
-
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="regName" placeholder="Enter your name">
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          
