@@ -45,7 +45,6 @@
       border-radius: 24px;
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(255,215,0,0.15);
-      transition: transform 0.3s;
       animation: fadeIn 0.4s ease;
     }
 
@@ -53,6 +52,17 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @keyframes swipeLeft {
+      to { opacity: 0; transform: translateX(-120%) rotate(-15deg); }
+    }
+
+    @keyframes swipeRight {
+      to { opacity: 0; transform: translateX(120%) rotate(15deg); }
+    }
+
+    .swipe-left { animation: swipeLeft 0.4s ease forwards; }
+    .swipe-right { animation: swipeRight 0.4s ease forwards; }
 
     .match-card-photo {
       width: 100%;
@@ -167,6 +177,13 @@
     .btn-gold:hover { background: #FFC200; }
     .btn-outline { background: transparent; color: #FFD700; border: 2px solid #FFD700; }
     .btn-outline:hover { background: #FFD700; color: #0A0908; }
+
+    .counter {
+      color: #5a4a2a;
+      font-size: 13px;
+      margin-top: 20px;
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
@@ -213,19 +230,4 @@
       {
         name: "Ayanda, 24",
         location: "📍 Cape Town, WC",
-        bio: "Artist, reader and coffee lover. Swipe right if you're interesting.",
-        emoji: "👩🏽",
-        interests: ["🎨 Art", "📚 Reading", "☕ Coffee"]
-      },
-      {
-        name: "Sibusiso, 28",
-        location: "📍 Pretoria, GP",
-        bio: "Tech guy by day, gamer by night. Looking for my player 2.",
-        emoji: "👨🏿",
-        interests: ["🎮 Gaming", "💻 Tech", "🎵 Music"]
-      },
-      {
-        name: "Lerato, 22",
-        location: "
-
-
+        bio: "Artist, reader and coffee lover.
