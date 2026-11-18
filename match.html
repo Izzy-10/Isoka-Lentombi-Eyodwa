@@ -4,31 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Match - Match</title>
+  <link rel="stylesheet" href="src/theme.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0A0908;
-      color: #FFF8E1;
       min-height: 100vh;
     }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #17110A;
-      border-bottom: 2px solid #C9A44C;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
-    .nav-icons { display: flex; gap: 18px; }
-    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
-    .nav-icons span:hover { transform: scale(1.2); }
 
     .match-area {
       display: flex;
@@ -40,11 +20,6 @@
     .match-card {
       width: 100%;
       max-width: 380px;
-      background: #17110A;
-      border: 2px solid #C9A44C;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(255,215,0,0.15);
       animation: fadeIn 0.4s ease;
     }
 
@@ -71,22 +46,35 @@
       align-items: center;
       justify-content: center;
       font-size: 110px;
-      background: #0A0908;
+      background: var(--input-bg);
     }
 
     .match-card-info { padding: 20px; }
-    .match-card-info h2 { color: #FFD700; font-size: 22px; margin-bottom: 4px; }
-    .match-card-info .location { color: #C9B78A; font-size: 13px; margin-bottom: 8px; }
-    .match-card-info .bio { color: #FFF8E1; font-size: 14px; margin-bottom: 12px; line-height: 1.5; }
 
-    .match-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .match-tags span {
-      padding: 4px 12px;
-      background: #0A0908;
-      border: 1px solid #C9A44C;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #C9B78A;
+    .match-card-info h2 {
+      color: var(--gold);
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .match-card-info .location {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .match-card-info .bio {
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .match-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
     }
 
     .action-btns {
@@ -110,22 +98,54 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    .btn-skip { background: #2a1a1a; }
-    .btn-skip:hover { background: #ff6b6b; transform: scale(1.1); }
+    .btn-skip {
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+    .btn-skip:hover {
+      background: #ff6b6b;
+      border-color: #ff6b6b;
+      transform: scale(1.1);
+    }
 
-    .btn-like { background: #1a2a1a; }
-    .btn-like:hover { background: #51cf66; transform: scale(1.1); }
+    .btn-like {
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+    .btn-like:hover {
+      background: #51cf66;
+      border-color: #51cf66;
+      transform: scale(1.1);
+    }
 
-    .btn-super { background: #1a1a2a; }
-    .btn-super:hover { background: #FFD700; transform: scale(1.1); }
+    .btn-super {
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+    .btn-super:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.1);
+    }
 
     .no-more {
       text-align: center;
       padding: 60px 20px;
-      color: #C9B78A;
+      color: var(--text-muted);
     }
-    .no-more .icon { font-size: 60px; display: block; margin-bottom: 15px; }
-    .no-more h3 { color: #FFD700; font-size: 22px; margin-bottom: 10px; }
+
+    .no-more .icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    .no-more h3 {
+      color: var(--gold);
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
     .no-more p { font-size: 14px; }
 
     .match-popup {
@@ -138,11 +158,12 @@
       justify-content: center;
       align-items: center;
     }
+
     .match-popup.show { display: flex; }
 
     .popup-card {
-      background: #17110A;
-      border: 2px solid #FFD700;
+      background: var(--surface);
+      border: 2px solid var(--gold);
       border-radius: 24px;
       padding: 40px 30px;
       text-align: center;
@@ -156,33 +177,37 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    .popup-card .icon { font-size: 60px; display: block; margin-bottom: 15px; }
-    .popup-card h2 { color: #FFD700; font-size: 26px; letter-spacing: 2px; margin-bottom: 10px; }
-    .popup-card p { color: #C9B78A; font-size: 14px; margin-bottom: 25px; }
-
-    .popup-btns { display: flex; gap: 10px; flex-direction: column; }
-
-    .btn {
-      padding: 13px;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+    .popup-card .icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 15px;
     }
-    .btn-gold { background: #FFD700; color: #0A0908; }
-    .btn-gold:hover { background: #FFC200; }
-    .btn-outline { background: transparent; color: #FFD700; border: 2px solid #FFD700; }
-    .btn-outline:hover { background: #FFD700; color: #0A0908; }
+
+    .popup-card h2 {
+      color: var(--gold);
+      font-size: 26px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .popup-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .popup-btns {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
 
     .counter {
-      color: #5a4a2a;
+      color: var(--text-faint);
       font-size: 13px;
       margin-top: 20px;
       letter-spacing: 1px;
+      text-align: center;
     }
   </style>
 </head>
@@ -205,13 +230,16 @@
       <h2>It's a Match!</h2>
       <p id="matchName">You and someone liked each other!</p>
       <div class="popup-btns">
-        <button class="btn btn-gold" onclick="goToChat()">Send a Message 💬</button>
+        <button class="btn btn-primary" onclick="goToChat()">Send a Message 💬</button>
         <button class="btn btn-outline" onclick="closePopup()">Keep Swiping 🔥</button>
       </div>
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { applyTheme, getTheme } from './src/theme.js';
+    applyTheme(getTheme());
+
     const profiles = [
       {
         name: "Nomsa, 23",
@@ -230,4 +258,40 @@
       {
         name: "Ayanda, 24",
         location: "📍 Cape Town, WC",
-        bio: "Artist, reader and coffee lover.
+        bio: "Artist, reader and coffee lover. Looking for my creative partner.",
+        emoji: "👩🏽",
+        interests: ["🎨 Art", "📚 Books", "☕ Coffee"]
+      },
+      {
+        name: "Lungelo, 25",
+        location: "📍 Pretoria, GP",
+        bio: "Engineer by day, musician by night. Swipe right if you love jazz.",
+        emoji: "👨🏿",
+        interests: ["🎷 Jazz", "🔧 Tech", "🎮 Gaming"]
+      },
+      {
+        name: "Zintle, 22",
+        location: "📍 East London, EC",
+        bio: "Fresh grad, big dreams. Love hiking and sunsets.",
+        emoji: "👩🏾",
+        interests: ["🥾 Hiking", "🌅 Sunsets", "📸 Photos"]
+      }
+    ];
+
+    let current = 0;
+
+    function renderCard() {
+      const area = document.getElementById('matchArea');
+      if (current >= profiles.length) {
+        area.innerHTML = `
+          <div class="no-more">
+            <span class="icon">💫</span>
+            <h3>You've seen everyone!</h3>
+            <p>Check back later for new matches.</p>
+          </div>`;
+        return;
+      }
+
+      const p = profiles[current
+
+
