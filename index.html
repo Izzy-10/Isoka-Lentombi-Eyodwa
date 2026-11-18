@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Match</title>
+  <link rel="stylesheet" href="src/theme.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0A0908;
-      color: #FFF8E1;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -21,6 +17,8 @@
     .splash {
       text-align: center;
       animation: fadeIn 1s ease;
+      width: 100%;
+      max-width: 400px;
     }
 
     @keyframes fadeIn {
@@ -43,15 +41,15 @@
 
     h1 {
       font-size: 42px;
-      color: #FFD700;
+      color: var(--gold);
       letter-spacing: 5px;
       text-transform: uppercase;
       margin-bottom: 10px;
-      text-shadow: 0 0 20px rgba(255,215,0,0.5);
+      text-shadow: 0 0 20px var(--card-shadow);
     }
 
     .subtitle {
-      color: #C9B78A;
+      color: var(--text-muted);
       font-size: 16px;
       margin-bottom: 40px;
       letter-spacing: 1px;
@@ -65,9 +63,22 @@
       flex-wrap: wrap;
     }
 
-    .feature { text-align: center; color: #C9B78A; }
-    .feature .f-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-    .feature span { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+    .feature {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .feature .f-icon {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .feature span {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
     .btn-group {
       display: flex;
@@ -77,73 +88,19 @@
       margin: 0 auto;
     }
 
-    .btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .btn-google {
-      background: #fff;
-      color: #0A0908;
-    }
-    .btn-google:hover {
-      background: #f0f0f0;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(255,255,255,0.2);
-    }
-
     .btn-google img {
       width: 22px;
       height: 22px;
     }
 
-    .btn-gold {
-      background: #FFD700;
-      color: #0A0908;
-    }
-    .btn-gold:hover {
-      background: #FFC200;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(255,215,0,0.4);
-    }
-
-    .divider {
-      color: #5a4a2a;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .loading {
-      display: none;
-      color: #FFD700;
-      font-size: 14px;
-      margin-top: 15px;
-    }
-
-    .error-msg {
-      display: none;
-      color: #ff6b6b;
-      font-size: 13px;
-      margin-top: 10px;
-      text-align: center;
-    }
-
     .footer {
       margin-top: 50px;
-      color: #2a1f0f;
+      color: var(--text-faint);
       font-size: 12px;
+    }
+
+    .theme-switcher {
+      margin-top: 30px;
     }
   </style>
 </head>
@@ -170,18 +127,26 @@
     </div>
 
     <div class="btn-group">
-      <button class="btn btn-google" id="googleBtn" onclick="signInWithGoogle()">
+      <button class="btn btn-google" id="googleBtn">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
         Continue with Google
       </button>
       <div class="divider">— or —</div>
-      <button class="btn btn-gold" onclick="window.location.href='login.html'">
+      <button class="btn btn-primary" onclick="window.location.href='login.html'">
         Login with Email 📧
       </button>
     </div>
 
-    <div class="loading" id="loadingMsg">⏳ Signing you in...</div>
+    <div class="error-msg" id="loadingMsg">⏳ Signing you in...</div>
     <div class="error-msg" id="errorMsg"></div>
+
+    <div class="theme-switcher">
+      <button class="theme-dot" style="background:#C9A44C" data-key="classic" title="Classic"></button>
+      <button class="theme-dot" style="background:#1B4332" data-key="luxury" title="Luxury"></button>
+      <button class="theme-dot" style="background:#4F46E5" data-key="startup" title="Startup"></button>
+      <button class="theme-dot" style="background:#C2410C" data-key="warm" title="Warm"></button>
+      <button class="theme-dot" style="background:#5B8DEF" data-key="dark" title="Dark"></button>
+    </div>
 
     <div class="footer">
       Love Match &copy; 2026 &nbsp;|&nbsp; Made with ❤️ in Mzansi
@@ -189,15 +154,30 @@
   </div>
 
   <script type="module">
-    import { auth, db, provider, signInWithPopup, onAuthStateChanged, doc, setDoc, getDoc } from './firebase.js';
+    import { applyTheme, getTheme, setTheme, THEMES } from './src/theme.js';
+    applyTheme(getTheme());
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = 'match.html';
-      }
+    document.querySelectorAll('.theme-dot').forEach(btn => {
+      if (btn.dataset.key === getTheme()) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        setTheme(btn.dataset.key);
+        document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
     });
 
-    window.signInWithGoogle = async function() {
+    import {
+      auth, db, provider,
+      signInWithPopup,
+      onAuthStateChanged,
+      doc, setDoc, getDoc
+    } from './firebase.js';
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = 'match.html';
+    });
+
+    document.getElementById('googleBtn').addEventListener('click', async () => {
       const loading = document.getElementById('loadingMsg');
       const errorMsg = document.getElementById('errorMsg');
       loading.style.display = 'block';
@@ -206,7 +186,6 @@
       try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
 
@@ -222,18 +201,14 @@
           window.location.href = 'profile.html';
         } else {
           const data = userSnap.data();
-          if (!data.profileComplete) {
-            window.location.href = 'profile.html';
-          } else {
-            window.location.href = 'match.html';
-          }
+          window.location.href = data.profileComplete ? 'match.html' : 'profile.html';
         }
       } catch (error) {
         loading.style.display = 'none';
         errorMsg.style.display = 'block';
         errorMsg.textContent = 'Sign in failed: ' + error.message;
       }
-    }
+    });
   </script>
 
 </body>
