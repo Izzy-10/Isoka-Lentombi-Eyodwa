@@ -12,215 +12,168 @@
       background: #0A0908;
       color: #FFF8E1;
       min-height: 100vh;
-    }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    .centered {
-      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
     }
 
-    .card {
-      background: #17110A;
-      border: 2px solid #C9A44C;
-      border-radius: 20px;
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 40px rgba(255,215,0,0.1);
+    .splash {
+      text-align: center;
+      animation: fadeIn 1s ease;
     }
 
-    .card.scroll {
-      max-height: 92vh;
-      overflow-y: auto;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .card.scroll::-webkit-scrollbar { width: 4px; }
-    .card.scroll::-webkit-scrollbar-thumb { background: #C9A44C; border-radius: 4px; }
-
-    .logo { text-align: center; margin-bottom: 30px; }
-    .logo .icon { font-size: 42px; display: block; margin-bottom: 8px; }
-    .logo h1 { font-size: 32px; color: #FFD700; letter-spacing: 3px; text-transform: uppercase; }
-    .logo p { color: #C9B78A; font-size: 13px; margin-top: 5px; }
-
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; margin-bottom: 7px; color: #C9B78A; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 13px 15px;
-      background: #0A0908;
-      color: #FFF8E1;
-      border: 2px solid #C9A44C;
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      transition: all 0.3s;
+    .splash .crown {
+      font-size: 80px;
+      display: block;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
     }
 
-    .form-group select option { background: #17110A; }
-    .form-group textarea { resize: vertical; min-height: 90px; }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #FFD700;
-      box-shadow: 0 0 15px rgba(255,215,0,0.2);
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
 
-    .form-group input::placeholder,
-    .form-group textarea::placeholder { color: #5a4a2a; }
+    .splash h1 {
+      font-size: 42px;
+      color: #FFD700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
 
-    .row { display: flex; gap: 15px; }
-    .row .form-group { flex: 1; }
+    .splash p {
+      color: #C9B78A;
+      font-size: 16px;
+      margin-bottom: 50px;
+      letter-spacing: 1px;
+    }
+
+    .splash .tagline {
+      color: #5a4a2a;
+      font-size: 13px;
+      margin-bottom: 40px;
+      font-style: italic;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
 
     .btn {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       border: none;
-      border-radius: 10px;
-      font-size: 15px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-top: 8px;
-    }
-
-    .btn-gold { background: #FFD700; color: #0A0908; }
-    .btn-gold:hover { background: #FFC200; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,215,0,0.4); }
-
-    .btn-outline { background: transparent; color: #FFD700; border: 2px solid #FFD700; }
-    .btn-outline:hover { background: #FFD700; color: #0A0908; }
-
-    .link { text-align: center; margin-top: 18px; color: #C9B78A; font-size: 14px; }
-    .link a { color: #FFD700; text-decoration: none; font-weight: bold; cursor: pointer; }
-    .link a:hover { text-decoration: underline; }
-
-    .forgot { text-align: right; margin-top: 6px; }
-    .forgot a { color: #C9A44C; font-size: 12px; cursor: pointer; }
-    .forgot a:hover { color: #FFD700; }
-
-    .msg-error { color: #ff6b6b; font-size: 13px; margin-top: 8px; text-align: center; }
-    .msg-success { color: #51cf66; font-size: 13px; margin-top: 8px; text-align: center; }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-    .tag {
-      padding: 6px 14px;
-      border: 2px solid #C9A44C;
-      border-radius: 20px;
-      font-size: 13px;
-      color: #C9B78A;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .tag.selected { background: #FFD700; color: #0A0908; border-color: #FFD700; font-weight: bold; }
-    .tag:hover { border-color: #FFD700; color: #FFD700; }
-
-    .avatar-wrap { text-align: center; margin-bottom: 20px; }
-    .avatar-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #FFD700;
-      object-fit: cover;
+      text-decoration: none;
       display: block;
-      margin: 0 auto 8px;
-      font-size: 52px;
-      line-height: 100px;
       text-align: center;
-      background: #0A0908;
-      cursor: pointer;
-    }
-    .avatar-wrap input { display: none; }
-    .avatar-wrap span { color: #C9A44C; font-size: 12px; cursor: pointer; text-decoration: underline; }
-    .avatar-wrap span:hover { color: #FFD700; }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #17110A;
-      border-bottom: 2px solid #C9A44C;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
-    .nav-icons { display: flex; gap: 18px; }
-    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
-    .nav-icons span:hover { transform: scale(1.2); }
-
-    .match-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
     }
 
-    .match-card {
-      width: 100%;
-      max-width: 380px;
-      background: #17110A;
-      border: 2px solid #C9A44C;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 40px rgba(255,215,0,0.15);
-      transition: transform 0.3s;
+    .btn-gold {
+      background: #FFD700;
+      color: #0A0908;
+    }
+    .btn-gold:hover {
+      background: #FFC200;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,215,0,0.4);
     }
 
-    .match-card-photo {
-      width: 100%;
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 120px;
-      background: #0A0908;
+    .btn-outline {
+      background: transparent;
+      color: #FFD700;
+      border: 2px solid #FFD700;
+    }
+    .btn-outline:hover {
+      background: #FFD700;
+      color: #0A0908;
+      transform: translateY(-3px);
     }
 
-    .match-card-info { padding: 20px; }
-    .match-card-info h2 { color: #FFD700; font-size: 22px; margin-bottom: 4px; }
-    .match-card-info p { color: #C9B78A; font-size: 14px; margin-bottom: 10px; }
-
-    .match-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .match-tags span {
-      padding: 4px 12px;
-      background: #0A0908;
-      border: 1px solid #C9A44C;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #C9B78A;
+    .divider {
+      color: #5a4a2a;
+      font-size: 13px;
+      margin: 5px 0;
+      text-align: center;
     }
 
-    .action-btns {
+    .features {
       display: flex;
       justify-content: center;
       gap: 30px;
-      margin-top: 25px;
+      margin-bottom: 45px;
+      flex-wrap: wrap;
     }
 
-    .action-btn {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: none;
-      font-size: 28px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba
+    .feature {
+      text-align: center;
+      color: #C9B78A;
+    }
 
+    .feature .f-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+    .feature span { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
 
+    .footer {
+      margin-top: 50px;
+      color: #2a1f0f;
+      font-size: 12px;
+    }
+
+    .glow {
+      text-shadow: 0 0 20px rgba(255,215,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="splash">
+    <span class="crown">👑</span>
+    <h1 class="glow">Love Match</h1>
+    <p>Find your royal match in Mzansi 🇿🇦</p>
+
+    <div class="features">
+      <div class="feature">
+        <span class="f-icon">🔥</span>
+        <span>Smart Matching</span>
+      </div>
+      <div class="feature">
+        <span class="f-icon">💬</span>
+        <span>Real Chat</span>
+      </div>
+      <div class="feature">
+        <span class="f-icon">❤️</span>
+        <span>Real People</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn btn-gold" href="login.html">Login 👑</a>
+      <div class="divider">— or —</div>
+      <a class="btn btn-outline" href="register.html">Create Account ✨</a>
+    </div>
+
+    <div class="footer">
+      Love Match &copy; 2026 &nbsp;|&nbsp; Made with ❤️ in Mzansi
+    </div>
+  </div>
+
+</body>
+</html>
