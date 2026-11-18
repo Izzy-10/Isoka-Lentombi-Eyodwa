@@ -4,33 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Match - Chat</title>
+  <link rel="stylesheet" href="src/theme.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0A0908;
-      color: #FFF8E1;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #17110A;
-      border-bottom: 2px solid #C9A44C;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
-    .nav-icons { display: flex; gap: 18px; }
-    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
-    .nav-icons span:hover { transform: scale(1.2); }
 
     .chat-list {
       display: flex;
@@ -40,7 +20,7 @@
     }
 
     .chat-list-title {
-      color: #C9A44C;
+      color: var(--accent);
       font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -52,16 +32,16 @@
       align-items: center;
       gap: 15px;
       padding: 15px;
-      background: #17110A;
-      border: 1px solid #C9A44C;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
       cursor: pointer;
       transition: all 0.3s;
     }
 
     .chat-item:hover {
-      border-color: #FFD700;
-      box-shadow: 0 4px 20px rgba(255,215,0,0.15);
+      border-color: var(--gold);
+      box-shadow: 0 4px 20px var(--card-shadow);
       transform: translateX(4px);
     }
 
@@ -69,8 +49,8 @@
       font-size: 40px;
       width: 55px;
       height: 55px;
-      background: #0A0908;
-      border: 2px solid #C9A44C;
+      background: var(--input-bg);
+      border: 2px solid var(--border);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -79,14 +59,33 @@
     }
 
     .chat-info { flex: 1; }
-    .chat-info h3 { color: #FFD700; font-size: 16px; margin-bottom: 4px; }
-    .chat-info p { color: #C9B78A; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+
+    .chat-info h3 {
+      color: var(--gold);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .chat-info p {
+      color: var(--text-muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
 
     .chat-meta { text-align: right; }
-    .chat-meta .time { color: #5a4a2a; font-size: 11px; margin-bottom: 6px; }
+
+    .chat-meta .time {
+      color: var(--text-faint);
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
     .chat-meta .badge {
-      background: #FFD700;
-      color: #0A0908;
+      background: var(--gold);
+      color: var(--btn-primary-text);
       font-size: 11px;
       font-weight: bold;
       padding: 2px 8px;
@@ -106,8 +105,8 @@
       align-items: center;
       gap: 12px;
       padding: 14px 20px;
-      background: #17110A;
-      border-bottom: 2px solid #C9A44C;
+      background: var(--navbar-bg);
+      border-bottom: 2px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -118,22 +117,30 @@
       cursor: pointer;
       transition: transform 0.2s;
     }
+
     .chat-header .back:hover { transform: scale(1.2); }
 
     .chat-header .avatar {
       font-size: 32px;
       width: 45px;
       height: 45px;
-      background: #0A0908;
-      border: 2px solid #FFD700;
+      background: var(--input-bg);
+      border: 2px solid var(--gold);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .chat-header .info h3 { color: #FFD700; font-size: 16px; }
-    .chat-header .info p { color: #51cf66; font-size: 12px; }
+    .chat-header .info h3 {
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .chat-header .info p {
+      color: #51cf66;
+      font-size: 12px;
+    }
 
     .messages {
       flex: 1;
@@ -142,10 +149,14 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      background: var(--bg);
     }
 
     .messages::-webkit-scrollbar { width: 4px; }
-    .messages::-webkit-scrollbar-thumb { background: #C9A44C; border-radius: 4px; }
+    .messages::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
 
     .msg {
       max-width: 75%;
@@ -153,20 +164,19 @@
       border-radius: 18px;
       font-size: 14px;
       line-height: 1.5;
-      position: relative;
     }
 
     .msg.received {
-      background: #17110A;
-      border: 1px solid #C9A44C;
-      color: #FFF8E1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
 
     .msg.sent {
-      background: #FFD700;
-      color: #0A0908;
+      background: var(--gold);
+      color: var(--btn-primary-text);
       align-self: flex-end;
       border-bottom-right-radius: 4px;
       font-weight: 500;
@@ -186,16 +196,16 @@
       align-items: center;
       gap: 10px;
       padding: 15px;
-      background: #17110A;
-      border-top: 2px solid #C9A44C;
+      background: var(--navbar-bg);
+      border-top: 2px solid var(--border);
     }
 
     .chat-input-area input {
       flex: 1;
       padding: 13px 16px;
-      background: #0A0908;
-      color: #FFF8E1;
-      border: 2px solid #C9A44C;
+      background: var(--input-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
       border-radius: 25px;
       font-size: 14px;
       font-family: inherit;
@@ -204,16 +214,16 @@
 
     .chat-input-area input:focus {
       outline: none;
-      border-color: #FFD700;
+      border-color: var(--gold);
     }
 
-    .chat-input-area input::placeholder { color: #5a4a2a; }
+    .chat-input-area input::placeholder { color: var(--text-faint); }
 
     .send-btn {
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: #FFD700;
+      background: var(--btn-primary-bg);
       border: none;
       font-size: 20px;
       cursor: pointer;
@@ -225,17 +235,28 @@
     }
 
     .send-btn:hover {
-      background: #FFC200;
+      opacity: 0.85;
       transform: scale(1.1);
     }
 
     .empty-chat {
       text-align: center;
       padding: 60px 20px;
-      color: #C9B78A;
+      color: var(--text-muted);
     }
-    .empty-chat .icon { font-size: 60px; display: block; margin-bottom: 15px; }
-    .empty-chat h3 { color: #FFD700; font-size: 20px; margin-bottom: 10px; }
+
+    .empty-chat .icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    .empty-chat h3 {
+      color: var(--gold);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
     .empty-chat p { font-size: 14px; }
   </style>
 </head>
@@ -267,6 +288,19 @@
       </div>
 
       <div class="chat-item" onclick="openChat('Thabo', '👨🏾', 'That game last night was crazy 🔥', '1h ago', false)">
-        <div class="chat-
+        <div class="chat-avatar">👨🏾</div>
+        <div class="chat-info">
+          <h3>Thabo</h3>
+          <p>That game last night was crazy 🔥</p>
+        </div>
+        <div class="chat-meta">
+          <div class="time">1h ago</div>
+        </div>
+      </div>
+
+      <div class="chat-item" onclick="openChat('Ayanda', '👩🏽', 'I love that artist too! 🎨', '3h ago', false)">
+        <div class="chat-avatar">👩🏽</div>
+        <div class="chat-info">
+          <h3>Ayanda
 
 
