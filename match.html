@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Match - Match</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0A0908;
+      color: #FFF8E1;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: #17110A;
+      border-bottom: 2px solid #C9A44C;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar h2 { color: #FFD700; font-size: 20px; letter-spacing: 2px; }
+    .nav-icons { display: flex; gap: 18px; }
+    .nav-icons span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+    .nav-icons span:hover { transform: scale(1.2); }
+
+    .match-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .match-card {
+      width: 100%;
+      max-width: 380px;
+      background: #17110A;
+      border: 2px solid #C9A44C;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(255,215,0,0.15);
+      transition: transform 0.3s;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .match-card-photo {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 110px;
+      background: #0A0908;
+    }
+
+    .match-card-info { padding: 20px; }
+    .match-card-info h2 { color: #FFD700; font-size: 22px; margin-bottom: 4px; }
+    .match-card-info .location { color: #C9B78A; font-size: 13px; margin-bottom: 8px; }
+    .match-card-info .bio { color: #FFF8E1; font-size: 14px; margin-bottom: 12px; line-height: 1.5; }
+
+    .match-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .match-tags span {
+      padding: 4px 12px;
+      background: #0A0908;
+      border: 1px solid #C9A44C;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #C9B78A;
+    }
+
+    .action-btns {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+    }
+
+    .action-btn {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .btn-skip { background: #2a1a1a; }
+    .btn-skip:hover { background: #ff6b6b; transform: scale(1.1); }
+
+    .btn-like { background: #1a2a1a; }
+    .btn-like:hover { background: #51cf66; transform: scale(1.1); }
+
+    .btn-super { background: #1a1a2a; }
+    .btn-super:hover { background: #FFD700; transform: scale(1.1); }
+
+    .no-more {
+      text-align: center;
+      padding: 60px 20px;
+      color: #C9B78A;
+    }
+    .no-more .icon { font-size: 60px; display: block; margin-bottom: 15px; }
+    .no-more h3 { color: #FFD700; font-size: 22px; margin-bottom: 10px; }
+    .no-more p { font-size: 14px; }
+
+    .match-popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+    .match-popup.show { display: flex; }
+
+    .popup-card {
+      background: #17110A;
+      border: 2px solid #FFD700;
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-card .icon { font-size: 60px; display: block; margin-bottom: 15px; }
+    .popup-card h2 { color: #FFD700; font-size: 26px; letter-spacing: 2px; margin-bottom: 10px; }
+    .popup-card p { color: #C9B78A; font-size: 14px; margin-bottom: 25px; }
+
+    .popup-btns { display: flex; gap: 10px; flex-direction: column; }
+
+    .btn {
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .btn-gold { background: #FFD700; color: #0A0908; }
+    .btn-gold:hover { background: #FFC200; }
+    .btn-outline { background: transparent; color: #FFD700; border: 2px solid #FFD700; }
+    .btn-outline:hover { background: #FFD700; color: #0A0908; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h2>👑 Love Match</h2>
+    <div class="nav-icons">
+      <span title="Match">🔥</span>
+      <span onclick="window.location.href='chat.html'" title="Chat">💬</span>
+      <span onclick="window.location.href='profile.html'" title="Profile">👤</span>
+    </div>
+  </div>
+
+  <div class="match-area" id="matchArea"></div>
+
+  <div class="match-popup" id="matchPopup">
+    <div class="popup-card">
+      <span class="icon">🎉</span>
+      <h2>It's a Match!</h2>
+      <p id="matchName">You and someone liked each other!</p>
+      <div class="popup-btns">
+        <button class="btn btn-gold" onclick="goToChat()">Send a Message 💬</button>
+        <button class="btn btn-outline" onclick="closePopup()">Keep Swiping 🔥</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const profiles = [
+      {
+        name: "Nomsa, 23",
+        location: "📍 Durban, KZN",
+        bio: "Love music, good food and long drives. Looking for someone real.",
+        emoji: "👩🏾",
+        interests: ["🎵 Music", "🍕 Food", "✈️ Travel"]
+      },
+      {
+        name: "Thabo, 26",
+        location: "📍 Johannesburg, GP",
+        bio: "Football fan, gym head and part-time chef. Let's vibe.",
+        emoji: "👨🏾",
+        interests: ["⚽ Sport", "💪 Fitness", "🍕 Food"]
+      },
+      {
+        name: "Ayanda, 24",
+        location: "📍 Cape Town, WC",
+        bio: "Artist, reader and coffee lover. Swipe right if you're interesting.",
+        emoji: "👩🏽",
+        interests: ["🎨 Art", "📚 Reading", "☕ Coffee"]
+      },
+      {
+        name: "Sibusiso, 28",
+        location: "📍 Pretoria, GP",
+        bio: "Tech guy by day, gamer by night. Looking for my player 2.",
+        emoji: "👨🏿",
+        interests: ["🎮 Gaming", "💻 Tech", "🎵 Music"]
+      },
+      {
+        name: "Lerato, 22",
+        location: "
+
+
