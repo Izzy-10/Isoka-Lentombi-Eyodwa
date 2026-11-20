@@ -23,7 +23,7 @@ export default function Notifications() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
-      <h1 className="font-display text-3xl font-extrabold">Alerts</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">Alerts</h1>
       <div className="mt-2"><ErrorText>{error}</ErrorText></div>
       {items === null && <p className="py-20 text-center text-muted">Loading…</p>}
       {items?.length === 0 && !error && (

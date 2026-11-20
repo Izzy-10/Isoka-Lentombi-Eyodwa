@@ -37,7 +37,7 @@ export default function Premium() {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
       <Link to="/discover" className="text-sm text-gold underline underline-offset-4">Back to Discover</Link>
-      <h1 className="mt-4 font-display text-4xl font-extrabold">Go further with Isoka</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Go further with Isoka</h1>
       {tier !== "free" && billing?.tier_expires_at && (
         <p className="mt-2 text-gold-soft">
           You're on Isoka {tier === "vip" ? "VIP" : "Premium"} until {date(billing.tier_expires_at)}.
@@ -53,9 +53,9 @@ export default function Premium() {
           const owned = RANK[tier] > RANK[p.id];
           const same = tier === p.id;
           return (
-            <li key={p.id} className={`rounded-3xl border p-6 ${p.id === "vip" ? "border-gold" : "border-line"} bg-panel`}>
-              <h2 className="font-display text-2xl font-extrabold">{p.name}</h2>
-              <p className="mt-1"><span className="font-display text-4xl font-extrabold text-gold">{rand(p.amount)}</span>
+            <li key={p.id} className={`rounded-3xl bg-panel p-6 ${p.id === "vip" ? "glow-strong" : "glow"}`}>
+              <h2 className="ribbon">{p.name}</h2>
+              <p className="mt-1"><span className="gold-text font-display text-4xl font-extrabold">{rand(p.amount)}</span>
                 <span className="text-muted"> for {p.days} days</span></p>
               <ul className="mt-4 grid gap-1.5 text-cream">
                 {p.features.map((f) => <li key={f}>• {f}</li>)}

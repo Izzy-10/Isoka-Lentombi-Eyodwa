@@ -38,7 +38,7 @@ export default function Verify() {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
       <Link to="/settings" className="text-sm text-gold underline underline-offset-4">Back to Settings</Link>
-      <h1 className="mt-4 font-display text-4xl font-extrabold">Get verified</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Get verified</h1>
       {state === null && <p className="py-16 text-center text-muted">Loading…</p>}
 
       {status === "approved" && (
@@ -74,7 +74,7 @@ export default function Verify() {
             See our <Link to="/privacy" className="underline underline-offset-4">Privacy Policy</Link>.
           </p>
           <label className="flex items-start gap-3 text-sm">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 h-5 w-5 accent-[#d4af37]" />
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 h-5 w-5 accent-gold" />
             <span>I agree that Isoka's team may look at my selfie to check it against my photos.</span>
           </label>
           <ErrorText>{error}</ErrorText>

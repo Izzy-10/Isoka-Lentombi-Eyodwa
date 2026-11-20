@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav.jsx";
 import SwipeCard from "../components/SwipeCard.jsx";
+import Logo from "../components/Logo.jsx";
+import ThemeButton from "../components/ThemeButton.jsx";
 import MatchModal from "../components/MatchModal.jsx";
 import ErrorText from "../components/ErrorText.jsx";
 import { getDiscover, sendSwipe } from "../services/api.js";
@@ -60,13 +62,23 @@ export default function Discover() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
-      <header className="mb-4 flex items-center justify-between">
-        <h1 className="font-display text-xl font-bold text-gold">Isoka</h1>
-        <div className="flex items-center gap-4 text-sm text-muted">
-          {left !== null && <span aria-live="polite">{left} swipes left today</span>}
-          {left !== null && <Link to="/premium" className="font-bold text-gold">Go Premium</Link>}
-          <Link to="/settings" className="underline underline-offset-4">Settings</Link>
+      <header className="mb-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <Logo size={36} />
+            <h1 className="font-brand text-lg font-bold tracking-[0.18em] gold-text">ISOKA</h1>
+          </div>
+          <div className="flex items-center gap-3 text-sm text-muted">
+            <ThemeButton compact />
+            <Link to="/settings" className="underline underline-offset-4">Settings</Link>
+          </div>
         </div>
+        {left !== null && (
+          <p className="mt-3 flex items-center justify-center gap-3 text-sm text-muted">
+            <span aria-live="polite">{left} swipes left today</span>
+            <Link to="/premium" className="font-bold text-gold">Go Premium</Link>
+          </p>
+        )}
       </header>
 
       {status === "loading" && <p className="py-24 text-center text-muted">Finding people near you…</p>}

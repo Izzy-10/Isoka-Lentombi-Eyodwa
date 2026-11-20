@@ -1,19 +1,26 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
+import Crown from "../components/Crown.jsx";
+import Logo from "../components/Logo.jsx";
+import ThemeButton from "../components/ThemeButton.jsx";
 
 export default function Welcome() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-between px-6 py-10">
-      <p className="font-display text-lg font-bold text-gold">Isoka Lentombi Eyodwa</p>
+    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-between px-6 py-8">
+      <div className="flex justify-end"><ThemeButton /></div>
 
-      <section className="hero-rise">
-        <h1 className="font-display text-6xl font-extrabold leading-[0.95] tracking-tight">
+      <section className="hero-rise text-center">
+        <Logo size={208} glow className="mx-auto" />
+        <p className="mt-6 flex items-center justify-center gap-3 font-brand text-sm font-bold uppercase tracking-[0.3em] text-gold-soft">
+          <Crown /> Single and mingle <Crown />
+        </p>
+        <h1 className="gold-text mt-4 font-display text-5xl font-extrabold leading-[0.95] tracking-tight">
           Isoka lakho
           <br />
           likulindele.
         </h1>
-        <p className="mt-6 max-w-xs text-lg text-muted">
-          Meet people across South Africa through short video profiles and live dates.
+        <p className="mx-auto mt-4 max-w-xs text-muted">
+          Meet real people across South Africa. Swipe, match and chat.
         </p>
       </section>
 

@@ -97,7 +97,7 @@ export default function EditProfile() {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
       <Link to="/settings" className="text-sm text-gold underline underline-offset-4">Back to Settings</Link>
-      <h1 className="mt-4 font-display text-4xl font-extrabold">Edit profile {verified && <VerifiedBadge size={28} />}</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Edit profile {verified && <VerifiedBadge size={28} />}</h1>
 
       <form onSubmit={save} className="mt-6 grid gap-5">
         <section className="grid gap-3">

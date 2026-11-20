@@ -4,6 +4,7 @@ import BottomNav from "../components/BottomNav.jsx";
 import Button from "../components/Button.jsx";
 import Field from "../components/Field.jsx";
 import ErrorText from "../components/ErrorText.jsx";
+import ThemeChips from "../components/ThemeChips.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { deleteAccount, exportMyData } from "../services/api.js";
 import { logout } from "../services/auth.js";
@@ -45,10 +46,15 @@ export default function Settings() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
-      <h1 className="font-display text-3xl font-extrabold">Settings</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">Settings</h1>
       <p className="mt-1 text-sm text-muted">{user?.phoneNumber || user?.email}</p>
 
-      <ul className="mt-6 grid gap-3">
+      <section className="mt-6 grid gap-3">
+        <h2 className="ribbon w-fit">Theme</h2>
+        <ThemeChips />
+      </section>
+
+      <ul className="mt-8 grid gap-3">
         <li><Link to="/profile/edit" className="block rounded-2xl border border-line bg-panel p-4">Edit profile</Link></li>
         <li><Link to="/verify" className="block rounded-2xl border border-gold bg-panel p-4 text-gold">Get verified</Link></li>
         <li><Link to="/premium" className="block rounded-2xl border border-line bg-panel p-4">Isoka Premium and VIP</Link></li>
@@ -58,7 +64,7 @@ export default function Settings() {
       </ul>
 
       <section className="mt-8 grid gap-3">
-        <h2 className="font-display text-xl font-bold">Your data</h2>
+        <h2 className="ribbon w-fit">Your data</h2>
         <p className="text-sm text-muted">Download a copy of everything we hold about you: your profile, matches, messages and payments.</p>
         <Button variant="ghost" disabled={!!busy} onClick={download}>{busy === "export" ? "Preparing…" : "Download my data"}</Button>
       </section>

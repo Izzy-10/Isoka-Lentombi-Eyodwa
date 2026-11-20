@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
 import Field from "../components/Field.jsx";
 import ErrorText from "../components/ErrorText.jsx";
+import Logo from "../components/Logo.jsx";
+import ThemeButton from "../components/ThemeButton.jsx";
 import {
   sendOtp, confirmOtp, googleSignIn, emailSignIn, emailSignUp, friendlyError,
 } from "../services/auth.js";
@@ -48,8 +50,14 @@ export default function Login() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-6 py-10">
-      <Link to="/" className="font-display text-lg font-bold text-gold">Isoka Lentombi Eyodwa</Link>
-      <h1 className="mt-10 font-display text-4xl font-extrabold">
+      <div className="flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center gap-2.5">
+          <Logo size={40} />
+          <span className="font-brand text-lg font-bold tracking-[0.18em] gold-text">ISOKA</span>
+        </Link>
+        <ThemeButton />
+      </div>
+      <h1 className="mt-10 font-display text-4xl font-extrabold gold-text">
         {signup ? "Create your account" : "Welcome back"}
       </h1>
 

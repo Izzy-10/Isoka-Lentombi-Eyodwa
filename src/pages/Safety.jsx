@@ -15,7 +15,7 @@ export default function Safety() {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
       <Link to="/settings" className="text-sm text-gold underline underline-offset-4">Back to Settings</Link>
-      <h1 className="mt-4 font-display text-4xl font-extrabold">Stay safe</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Stay safe</h1>
       <ul className="mt-6 grid gap-4">
         {TIPS.map(([title, body]) => (
           <li key={title} className="rounded-2xl border border-line bg-panel p-5">

@@ -47,7 +47,7 @@ export default function PaymentCallback() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-5 px-6 py-10 text-center">
-      <h1 className="font-display text-4xl font-extrabold text-gold" aria-live="polite">{title}</h1>
+      <h1 className="font-display text-4xl font-extrabold text-gold gold-text" aria-live="polite">{title}</h1>
       <p className="text-muted">{body}</p>
       {action}
       <Link to="/discover"><Button variant="ghost">Back to Discover</Button></Link>

@@ -11,7 +11,7 @@ export default function Legal({ doc: key }) {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 py-8">
       <button onClick={() => navigate(-1)} className="text-sm text-gold underline underline-offset-4">Back</button>
-      <h1 className="mt-4 font-display text-4xl font-extrabold">{doc.title}</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">{doc.title}</h1>
       <p className="mt-1 text-sm text-muted">Last updated: {doc.updated}</p>
 
       {draft && (

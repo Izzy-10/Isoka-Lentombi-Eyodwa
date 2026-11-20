@@ -25,7 +25,7 @@ export default function Matches() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
-      <h1 className="font-display text-3xl font-extrabold">Your matches</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">Your matches</h1>
       <div className="mt-2"><ErrorText>{error}</ErrorText></div>
 
       {items === null && <p className="py-20 text-center text-muted">Loading…</p>}
@@ -37,7 +37,7 @@ export default function Matches() {
         {items?.map((m) => (
           <li key={m.match_id} className="flex items-center gap-3 rounded-2xl border border-line bg-panel p-3">
             <Link to={`/chat/${m.match_id}`} className="flex min-w-0 flex-1 items-center gap-4">
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full bg-line">
+              <div className="oval h-[5.25rem] w-[3.9rem] shrink-0">
                 {m.profile.profile_photo && <img src={m.profile.profile_photo} alt="" className="h-full w-full object-cover" />}
               </div>
               <div className="min-w-0 flex-1">

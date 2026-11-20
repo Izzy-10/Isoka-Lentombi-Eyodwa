@@ -80,7 +80,7 @@ export default function Chat() {
     <main className="mx-auto flex h-dvh max-w-md flex-col">
       <header className="flex items-center gap-3 border-b border-line px-4 py-3">
         <Link to="/matches" aria-label="Back to matches" className="px-1 text-xl text-gold">‹</Link>
-        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-line">
+        <div className="oval h-12 w-9 shrink-0">
           {profile?.profile_photo && <img src={profile.profile_photo} alt="" className="h-full w-full object-cover" />}
         </div>
         <div className="min-w-0 flex-1">
