@@ -40,7 +40,7 @@ export default function SetupLocation() {
 
   return (
     <div className="grid gap-5">
-      <h1 className="font-display text-3xl font-extrabold">Where are you based?</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">Where are you based?</h1>
       <Field label="Province" as="select" value={data.province}
         onChange={(e) => update({ province: e.target.value, city: "" })}>
         <option value="">Choose one</option>

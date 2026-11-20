@@ -13,7 +13,7 @@ export default function OnboardingLayout() {
 
   return (
     <main className="mx-auto min-h-screen max-w-md px-6 py-8">
-      <p className="text-sm text-muted" aria-live="polite">
+      <p className="ribbon" aria-live="polite">
         Step {current + 1} of {STEPS.length}: {STEPS[current][1]}
       </p>
       <div className="mt-3 grid grid-cols-4 gap-2" aria-hidden="true">

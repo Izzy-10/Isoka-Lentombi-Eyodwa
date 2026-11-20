@@ -32,7 +32,7 @@ export default function SetupPhotos() {
 
   return (
     <div className="grid gap-5">
-      <h1 className="font-display text-3xl font-extrabold">Add your photos</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">Add your photos</h1>
       <p className="text-muted">Add up to {MAX_PHOTOS}. Your first photo is your main one. Show your face clearly.</p>
 
       <div className="grid grid-cols-3 gap-3">

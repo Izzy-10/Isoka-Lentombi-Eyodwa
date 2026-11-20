@@ -25,7 +25,7 @@ export default function SetupInterests() {
 
   return (
     <div className="grid gap-5">
-      <h1 className="font-display text-3xl font-extrabold">What are you into?</h1>
+      <h1 className="font-display text-3xl font-extrabold gold-text">What are you into?</h1>
       <p className="text-muted">Pick {MIN_INTERESTS} to {MAX_INTERESTS}. We use these to suggest people.</p>
 
       <div className="flex flex-wrap gap-2">
