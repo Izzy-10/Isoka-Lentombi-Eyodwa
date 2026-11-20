@@ -1,6 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
+import ThemeDrawer from "./components/ThemeDrawer.jsx";
 
 // If the app can't start, show why on screen instead of a blank page.
 const REQUIRED = [
@@ -56,15 +58,18 @@ if (missing.length) {
     .then(([{ BrowserRouter }, { default: App }, { AuthProvider }, { OnboardingProvider }]) => {
       root.render(
         <React.StrictMode>
-          <Boundary>
-            <BrowserRouter>
-              <AuthProvider>
-                <OnboardingProvider>
-                  <App />
-                </OnboardingProvider>
-              </AuthProvider>
-            </BrowserRouter>
-          </Boundary>
+          <ThemeProvider>
+            <Boundary>
+              <BrowserRouter>
+                <AuthProvider>
+                  <OnboardingProvider>
+                    <App />
+                  </OnboardingProvider>
+                </AuthProvider>
+              </BrowserRouter>
+            </Boundary>
+            <ThemeDrawer />
+          </ThemeProvider>
         </React.StrictMode>
       );
     })
