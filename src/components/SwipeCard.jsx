@@ -39,7 +39,7 @@ export default function SwipeCard({ profile, onSwipe, disabled }) {
     <article
       aria-label={`${profile.display_name}, ${profile.age}`}
       onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}
-      className="relative aspect-[3/4] w-full select-none overflow-hidden rounded-3xl border border-line bg-panel"
+      className="relative aspect-[3/4] w-full select-none overflow-hidden rounded-3xl glow bg-panel"
       style={{
         touchAction: "pan-y",
         transform: `translateX(${dx}px) rotate(${dx / 25}deg)`,

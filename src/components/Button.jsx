@@ -1,6 +1,6 @@
 const styles = {
-  primary: "bg-gold text-ink hover:bg-gold-soft disabled:opacity-40",
-  ghost: "border border-line text-cream hover:border-gold disabled:opacity-40",
+  primary: "btn-primary text-ink disabled:opacity-40",
+  ghost: "border border-line bg-panel/50 text-cream hover:border-gold disabled:opacity-40",
   link: "text-gold underline underline-offset-4 hover:text-gold-soft",
 };
 

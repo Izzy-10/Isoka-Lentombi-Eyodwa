@@ -54,7 +54,7 @@ export default function SafetyMenu({ profile, onClose, onBlocked }) {
               {REASONS.map(([value, label]) => (
                 <label key={value} className="flex items-center gap-3 rounded-xl border border-line px-4 py-3">
                   <input type="radio" name="reason" value={value} checked={reason === value}
-                    onChange={() => setReason(value)} className="accent-[#d4af37]" />
+                    onChange={() => setReason(value)} className="accent-gold" />
                   {label}
                 </label>
               ))}
