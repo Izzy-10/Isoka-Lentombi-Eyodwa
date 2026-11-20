@@ -12,3 +12,6 @@ const app = initializeApp({
 
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+// Give up within seconds instead of retrying for 10 minutes, so a problem shows up as a message, not a spinner
+storage.maxUploadRetryTime = 20000;
+storage.maxOperationRetryTime = 15000;
