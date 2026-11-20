@@ -6,7 +6,7 @@ import ErrorText from "../../components/ErrorText.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useOnboarding } from "../../context/OnboardingContext.jsx";
 import { PROVINCES } from "../../utils/constants.js";
-import { uploadPhoto } from "../../services/storage.js";
+import { describeStorageError, uploadPhoto, withTimeout } from "../../services/storage.js";
 import { saveProfile } from "../../services/api.js";
 
 export default function SetupLocation() {
@@ -26,13 +26,15 @@ export default function SetupLocation() {
     if (!data.province || !data.city) return setError("Choose your province and city.");
     setError(""); setBusy(true);
     try {
-      const photo_urls = await Promise.all(photos.map((f, i) => uploadPhoto(user.uid, f, i)));
+      const photo_urls = await withTimeout(Promise.all(photos.map((f, i) => uploadPhoto(user.uid, f, i))), 60000);
       await saveProfile({ ...data, photo_urls, profile_photo: photo_urls[0] });
       localStorage.setItem("isoka_onboarded", "1");
       reset();
       navigate("/discover", { replace: true });
-    } catch {
-      setError("We couldn't upload your photos. Check your connection and try again.");
+    } catch (e) {
+      console.error(e);
+      // Server errors already have a clear message; anything else is a photo upload problem
+      setError(e?.status ? e.message : describeStorageError(e));
     } finally {
       setBusy(false);
     }
