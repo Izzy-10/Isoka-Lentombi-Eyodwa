@@ -63,6 +63,9 @@ export default function SetupPhotos() {
 
       <ErrorText>{error}</ErrorText>
       <Button onClick={next}>Continue</Button>
+      <Button variant="link" onClick={() => navigate("/onboarding/interests")}>
+        Skip photos for now
+      </Button>
       <Button variant="link" onClick={() => navigate("/onboarding/profile")}>Back</Button>
     </div>
   );
