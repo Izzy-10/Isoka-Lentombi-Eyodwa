@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import VerifiedBadge from "./VerifiedBadge.jsx";
+import { normalizeTikTokUsername } from "../utils/helpers.js";
 
 const THRESHOLD = 110;
 
@@ -9,6 +10,7 @@ export default function SwipeCard({ profile, onSwipe, disabled }) {
   const [dragging, setDragging] = useState(false);
   const startX = useRef(0);
   const photos = profile.photo_urls?.length ? profile.photo_urls : profile.profile_photo ? [profile.profile_photo] : [];
+  const tiktokUsername = normalizeTikTokUsername(profile.tiktok_username);
 
   const down = (e) => {
     if (disabled) return;
@@ -81,6 +83,22 @@ export default function SwipeCard({ profile, onSwipe, disabled }) {
         </h2>
         <p className="text-sm text-gold-soft">{profile.city}, {profile.province}</p>
         {profile.bio && <p className="mt-2 line-clamp-2 text-sm text-cream">{profile.bio}</p>}
+        {tiktokUsername && (
+          <a
+            href={`https://www.tiktok.com/@${encodeURIComponent(tiktokUsername)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Check ${profile.display_name}'s TikTok profile`}
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerMove={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+            className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-full border border-gold/50 px-3 text-sm font-semibold text-gold-soft hover:bg-gold/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+          >
+            <span aria-hidden="true">🤟</span>
+            <span>View on TikTok</span>
+          </a>
+        )}
         <ul className="mt-3 flex flex-wrap gap-1.5">
           {profile.interests.slice(0, 5).map((t) => (
             <li key={t} className="rounded-full border border-gold/50 px-2.5 py-0.5 text-xs text-gold-soft">{t}</li>

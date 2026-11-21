@@ -23,6 +23,7 @@ export const privacy = {
         "Information you give us:",
         "• Your cellphone number or email address, used to log in.",
         "• Your display name, date of birth, gender, what you are looking for, bio and interests.",
+        "• A TikTok username or profile link, if you choose to add one.",
         "• Your photos.",
         "• A verification selfie, only if you choose to get verified. We ask for your agreement first.",
         "• Your province and city, and (only if you choose to share it) your device location, which we use to work out distances.",
@@ -51,7 +52,8 @@ export const privacy = {
     {
       h: "4. Who can see your information",
       p: [
-        "Other users can see: whether you are verified, your display name, age (not your date of birth), city and province, bio, interests, photos, and the messages you send them. They never see your phone number, email address, date of birth or device location. No other user ever sees your verification selfie. Only our review team does, to compare it with your photos.",
+        "Other users can see: whether you are verified, your display name, age (not your date of birth), city and province, bio, interests, photos, any TikTok profile link you choose to add, and the messages you send them. They never see your phone number, email address, date of birth or device location. No other user ever sees your verification selfie. Only our review team does, to compare it with your photos.",
+        "If you open a TikTok link, TikTok may collect information about your visit under its own privacy policy.",
         "Our service providers process information for us:",
         "• Google Firebase: login and photo storage.",
         "• Railway: our servers and database.",

@@ -5,7 +5,7 @@ import Field from "../../components/Field.jsx";
 import ErrorText from "../../components/ErrorText.jsx";
 import { useOnboarding } from "../../context/OnboardingContext.jsx";
 import { GENDERS, LOOKING_FOR } from "../../utils/constants.js";
-import { ageFromDob } from "../../utils/helpers.js";
+import { ageFromDob, normalizeTikTokUsername } from "../../utils/helpers.js";
 
 export default function SetupProfile() {
   const { data, update } = useOnboarding();
@@ -18,6 +18,9 @@ export default function SetupProfile() {
     if (ageFromDob(data.dob) < 18) return setError("You must be 18 or older to use Isoka.");
     if (!data.gender || !data.looking_for) return setError("Choose your gender and what you're looking for.");
     if (!data.accepted_terms) return setError("Please accept the Terms and Privacy Policy to continue.");
+    const tiktok_username = normalizeTikTokUsername(data.tiktok_username);
+    if (tiktok_username === null) return setError("Enter a valid TikTok username or profile link.");
+    update({ tiktok_username });
     setError("");
     navigate("/onboarding/photos");
   };
@@ -40,6 +43,10 @@ export default function SetupProfile() {
         <option value="">Choose one</option>
         {LOOKING_FOR.map((g) => <option key={g}>{g}</option>)}
       </Field>
+      <Field label="TikTok username (optional)" value={data.tiktok_username || ""} maxLength={100}
+        placeholder="@username or profile link"
+        hint="Add your TikTok so matches can check out your profile."
+        onChange={(e) => update({ tiktok_username: e.target.value })} />
       <Field label="Bio" as="textarea" rows={4} maxLength={300} value={data.bio}
         hint={`${data.bio.length}/300`} onChange={(e) => update({ bio: e.target.value })} />
       <label className="flex items-start gap-3 text-sm">
