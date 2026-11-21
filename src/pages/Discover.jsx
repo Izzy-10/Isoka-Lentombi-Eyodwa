@@ -31,7 +31,12 @@ export default function Discover() {
       setLimitHit(d.swipes_left === 0);
       setStatus("ready");
     } catch (e) {
-      if (e.status === 409) {
+      if (e.status === 401) {
+        navigate("/login", {
+          replace: true,
+          state: { notice: "Your sign-in couldn’t be verified. Please log in again." },
+        });
+      } else if (e.status === 409) {
         localStorage.removeItem("isoka_onboarded");
         navigate("/onboarding/profile", { replace: true });
       } else {

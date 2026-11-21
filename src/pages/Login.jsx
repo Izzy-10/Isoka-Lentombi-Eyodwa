@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams, Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
 import Field from "../components/Field.jsx";
 import ErrorText from "../components/ErrorText.jsx";
@@ -13,6 +13,7 @@ const TABS = [["phone", "Phone"], ["email", "Email"]];
 
 export default function Login() {
   const [params] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [signup, setSignup] = useState(params.get("mode") === "signup");
   const [tab, setTab] = useState("phone");
@@ -60,6 +61,9 @@ export default function Login() {
       <h1 className="mt-10 font-display text-4xl font-extrabold gold-text">
         {signup ? "Create your account" : "Welcome back"}
       </h1>
+      {location.state?.notice && (
+        <p role="status" className="mt-3 text-sm text-muted">{location.state.notice}</p>
+      )}
 
       <div role="tablist" className="mt-8 grid grid-cols-2 rounded-xl border border-line p-1">
         {TABS.map(([id, label]) => (
