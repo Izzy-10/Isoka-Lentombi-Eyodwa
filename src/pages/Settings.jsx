@@ -55,7 +55,7 @@ export default function Settings() {
       </section>
 
       <ul className="mt-8 grid gap-3">
-        <li><Link to="/profile/edit" className="block rounded-2xl border border-line bg-panel p-4">Edit profile</Link></li>
+        <li><Link to="/profile/edit" className="block rounded-2xl border border-line bg-panel p-4">Manage my profile</Link></li>
         <li><Link to="/verify" className="block rounded-2xl border border-gold bg-panel p-4 text-gold">Get verified</Link></li>
         <li><Link to="/premium" className="block rounded-2xl border border-line bg-panel p-4">Isoka Premium and VIP</Link></li>
         <li><Link to="/safety" className="block rounded-2xl border border-line bg-panel p-4">Safety tips</Link></li>

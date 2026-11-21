@@ -88,13 +88,12 @@ export default function EditProfile() {
     if (form.display_name.trim().length < 2) return setError("Enter the name you want people to see.");
     if (form.interests.length < MIN_INTERESTS) return setError(`Pick at least ${MIN_INTERESTS} interests.`);
     if (!form.province || !form.city) return setError("Choose your province and city.");
-    if (photos.length < 1) return setError("Keep at least 1 photo that clearly shows your face.");
     const tiktok_username = normalizeTikTokUsername(form.tiktok_username);
     if (tiktok_username === null) return setError("Enter a valid TikTok username or profile link.");
     setError(""); setNotice(null); setBusy(true);
     try {
       const urls = await Promise.all(photos.map((p, i) => (p.file ? uploadPhoto(user.uid, p.file, i) : p.url)));
-      const saved = normalizeProfile(await updateProfile({ ...form, tiktok_username, photo_urls: urls, profile_photo: urls[0] }));
+      const saved = normalizeProfile(await updateProfile({ ...form, tiktok_username, photo_urls: urls, profile_photo: urls[0] ?? null }));
       const lostBadge = verified && !saved.verified;
       setForm(saved);
       setVerified(saved.verified);
@@ -122,13 +121,13 @@ export default function EditProfile() {
   return (
     <main className="mx-auto min-h-screen max-w-md px-5 pb-28 pt-6">
       <Link to="/settings" className="text-sm text-gold underline underline-offset-4">Back to Settings</Link>
-      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Edit profile {verified && <VerifiedBadge size={28} />}</h1>
+      <h1 className="mt-4 font-display text-4xl font-extrabold gold-text">Manage my profile {verified && <VerifiedBadge size={28} />}</h1>
 
       <form onSubmit={save} className="mt-6 grid gap-5">
         <section className="grid gap-3">
           <h2 className="font-display text-xl font-bold">Photos</h2>
           <p className="text-sm text-muted">
-            Up to {maxPhotos}. The first is your main photo.
+            Photos are optional when managing your profile. Add up to {maxPhotos}; the first is your main photo.
             {verified && " If you add a new photo, your gold badge is removed until you verify again. Removing or reordering photos keeps it."}
           </p>
           <ul className="grid grid-cols-3 gap-3">
