@@ -41,14 +41,14 @@ service firebase.storage {
 `/` -> `/login` -> `/onboarding/profile -> photos -> interests -> location` -> `/discover`
 
 ## Notes
-- Profile saves use the Vercel API at `PUT /api/profiles/me`. It verifies Firebase ID tokens and stores profile data in Neon. In production, the profile and billing endpoints implemented in this repo use same-origin Vercel functions; other API flows (including Discover and swipes) use the external backend configured by `VITE_API_URL`. Local Vite development uses `VITE_API_URL` for API calls.
+- Profile saves use the Vercel API at `PUT /api/profiles/me`. It verifies Firebase ID tokens and stores profile data in Neon. In production, profile, billing-state, Discover, and swipe endpoints implemented in this repo use same-origin Vercel functions. Remaining API flows use the external backend configured by `VITE_API_URL`; local Vite development uses `VITE_API_URL` for API calls.
 - Photos upload to Firebase Storage under `users/{uid}/photos/`.
 - 18+ is enforced by date of birth in step 1. Re-check it on the backend too.
 
 ## Week 2: swipe feed
 - `/discover`: swipe a card left (pass) or right (like), or use the buttons. Tap the left or right of a photo to browse photos.
 - Match popup when both people like each other. `/matches` lists matches and lets you unmatch.
-- Discover, swipe, match, chat, safety and payment routes still require their separate backend API; the profile routes are implemented in this repo.
+- `GET /api/discover` returns eligible profiles without exposing birth dates or exact coordinates. `POST /api/swipes` stores likes and passes in Neon, enforces the free daily limit, and records mutual-like matches. Match listing, chat, safety and payment workflows still need their own API routes.
 - Free users get 10 swipes a day. Super likes return a "Premium" message until payments are added.
 
 ## Week 3: chat, safety, alerts

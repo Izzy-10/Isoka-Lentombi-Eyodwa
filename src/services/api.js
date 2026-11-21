@@ -1,7 +1,12 @@
 import { auth } from "./firebase.js";
 
 const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
-const SAME_ORIGIN_API_PATHS = new Set(["/api/profiles/me", "/api/payments/me"]);
+const SAME_ORIGIN_API_PATHS = new Set([
+  "/api/profiles/me",
+  "/api/payments/me",
+  "/api/discover",
+  "/api/swipes",
+]);
 
 function apiBaseFor(path) {
   if (import.meta.env.DEV) return API_URL;
