@@ -31,16 +31,29 @@ async function authed(path, options = {}) {
   }
 
   const apiBase = apiBaseFor(path);
-  let res;
-  try {
-    res = await fetch(`${apiBase}${path}`, {
-      ...options,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...options.headers },
-    });
-  } catch {
-    const error = new Error("Couldn’t reach the API. Check your connection and try again.");
-    error.status = 503;
-    throw error;
+  const request = async (idToken) => {
+    try {
+      return await fetch(`${apiBase}${path}`, {
+        ...options,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${idToken}`, ...options.headers },
+      });
+    } catch {
+      const error = new Error("Couldn’t reach the API. Check your connection and try again.");
+      error.status = 503;
+      throw error;
+    }
+  };
+
+  let res = await request(token);
+  if (res.status === 401) {
+    try {
+      token = await user.getIdToken(true);
+    } catch {
+      const error = new Error("Your session expired. Please sign in again.");
+      error.status = 401;
+      throw error;
+    }
+    res = await request(token);
   }
 
   if (res.status === 204) return null;
