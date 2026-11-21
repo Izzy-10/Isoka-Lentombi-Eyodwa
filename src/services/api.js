@@ -1,36 +1,58 @@
 import { auth } from "./firebase.js";
 
-const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "")
+  : "";
 
 async function authed(path, options = {}) {
-  const token = await auth.currentUser?.getIdToken();
-  const res = await fetch(`${API}${path}`, {
-    ...options,
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...options.headers },
-  });
+  const user = auth.currentUser;
+  if (!user) {
+    const error = new Error("Please sign in again.");
+    error.status = 401;
+    throw error;
+  }
+
+  let token;
+  try {
+    token = await user.getIdToken();
+  } catch {
+    const error = new Error("Your session expired. Please sign in again.");
+    error.status = 401;
+    throw error;
+  }
+
+  let res;
+  try {
+    res = await fetch(`${API}${path}`, {
+      ...options,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...options.headers },
+    });
+  } catch {
+    const error = new Error("Couldn’t reach the API. Check your connection and try again.");
+    error.status = 503;
+    throw error;
+  }
+
   if (res.status === 204) return null;
+  if (!res.headers.get("content-type")?.includes("json")) {
+    const error = new Error("The API returned a web page instead of data. Check that this deployment includes the profile API.");
+    error.status = 502;
+    throw error;
+  }
+
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = new Error(body.detail || "Something went wrong. Try again.");
-    err.status = res.status;
-    throw err;
+    const error = new Error(body.detail || "Something went wrong. Try again.");
+    error.status = res.status;
+    throw error;
   }
   return body;
 }
 
-// Call after login so Django creates/loads the user from the Firebase token.
 export const verifySession = () => authed("/api/auth/verify-token", { method: "POST" });
 
-// Saves to Django when the backend is up; otherwise keeps a local copy so onboarding still completes.
-export async function saveProfile(profile) {
-  localStorage.setItem("isoka_profile", JSON.stringify(profile));
-  if (!API) return { offline: true };
-  try {
-    return await authed("/api/profiles/me", { method: "PUT", body: JSON.stringify(profile) });
-  } catch {
-    return { offline: true };
-  }
-}
+export const saveProfile = (profile) =>
+  authed("/api/profiles/me", { method: "PUT", body: JSON.stringify(profile) });
 
 // Week 2
 export const getDiscover = (filters = {}) => {

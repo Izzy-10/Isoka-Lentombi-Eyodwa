@@ -41,14 +41,14 @@ service firebase.storage {
 `/` -> `/login` -> `/onboarding/profile -> photos -> interests -> location` -> `/discover`
 
 ## Notes
-- Profile saves to `PUT /api/profiles/me` once Django is running (Week 3). Until then it falls back to localStorage so you can test the full flow.
+- Profile saves use the Vercel API at `PUT /api/profiles/me`. It verifies Firebase ID tokens and stores profile data in Neon. Vercel deployments call the API on the same origin; `VITE_API_URL` is only used by the local Vite preview.
 - Photos upload to Firebase Storage under `users/{uid}/photos/`.
 - 18+ is enforced by date of birth in step 1. Re-check it on the backend too.
 
 ## Week 2: swipe feed
 - `/discover`: swipe a card left (pass) or right (like), or use the buttons. Tap the left or right of a photo to browse photos.
 - Match popup when both people like each other. `/matches` lists matches and lets you unmatch.
-- Needs the Django backend running and `VITE_API_URL` set (for example `http://localhost:8000`).
+- Discover, swipe, match, chat, safety and payment routes still require their separate backend API; the profile routes are implemented in this repo.
 - Free users get 10 swipes a day. Super likes return a "Premium" message until payments are added.
 
 ## Week 3: chat, safety, alerts
