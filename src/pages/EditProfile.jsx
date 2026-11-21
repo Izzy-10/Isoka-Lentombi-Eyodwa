@@ -15,6 +15,27 @@ const MAX_MB = 8;
 let nextId = 0;
 const item = (o) => ({ id: ++nextId, ...o });
 
+function normalizeProfile(profile) {
+  const photo_urls = Array.isArray(profile?.photo_urls)
+    ? profile.photo_urls
+    : profile?.profile_photo ? [profile.profile_photo] : [];
+
+  return {
+    ...profile,
+    display_name: profile?.display_name ?? "",
+    dob: profile?.dob ?? "",
+    gender: profile?.gender ?? "",
+    looking_for: profile?.looking_for ?? "",
+    bio: profile?.bio ?? "",
+    interests: Array.isArray(profile?.interests) ? profile.interests : [],
+    province: profile?.province ?? "",
+    city: profile?.city ?? "",
+    tiktok_username: profile?.tiktok_username ?? "",
+    verified: Boolean(profile?.verified),
+    photo_urls,
+  };
+}
+
 export default function EditProfile() {
   const { user } = useAuth();
   const [form, setForm] = useState(null);
@@ -29,11 +50,12 @@ export default function EditProfile() {
   useEffect(() => {
     Promise.all([getMyProfile(), getBilling()])
       .then(([p, b]) => {
-        setForm(p);
-        setVerified(p.verified);
-        setOriginal(p.photo_urls);
-        setPhotos(p.photo_urls.map((url) => item({ url })));
-        setMaxPhotos(b.tier === "free" ? 3 : 10);
+        const profile = normalizeProfile(p);
+        setForm(profile);
+        setVerified(profile.verified);
+        setOriginal(profile.photo_urls);
+        setPhotos(profile.photo_urls.map((url) => item({ url })));
+        setMaxPhotos(b?.tier === "free" ? 3 : 10);
       })
       .catch((e) => setError(e.message));
   }, []);
@@ -72,7 +94,7 @@ export default function EditProfile() {
     setError(""); setNotice(null); setBusy(true);
     try {
       const urls = await Promise.all(photos.map((p, i) => (p.file ? uploadPhoto(user.uid, p.file, i) : p.url)));
-      const saved = await updateProfile({ ...form, tiktok_username, photo_urls: urls, profile_photo: urls[0] });
+      const saved = normalizeProfile(await updateProfile({ ...form, tiktok_username, photo_urls: urls, profile_photo: urls[0] }));
       const lostBadge = verified && !saved.verified;
       setForm(saved);
       setVerified(saved.verified);
