@@ -6,7 +6,7 @@ export const useOnboarding = () => useContext(OnboardingContext);
 const KEY = "isoka_onboarding";
 const empty = {
   display_name: "", dob: "", gender: "", looking_for: "", bio: "",
-  accepted_terms: false, interests: [], province: "", city: "", lat: null, lng: null,
+  accepted_terms: false, interests: [], tiktok_username: "", province: "", city: "", lat: null, lng: null,
 };
 
 export function OnboardingProvider({ children }) {

@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { getBilling, getMyProfile, updateProfile } from "../services/api.js";
 import { deletePhotoByUrl, uploadPhoto } from "../services/storage.js";
 import { GENDERS, INTERESTS, LOOKING_FOR, MAX_INTERESTS, MIN_INTERESTS, PROVINCES } from "../utils/constants.js";
+import { normalizeTikTokUsername } from "../utils/helpers.js";
 
 const MAX_MB = 8;
 let nextId = 0;
@@ -66,10 +67,12 @@ export default function EditProfile() {
     if (form.interests.length < MIN_INTERESTS) return setError(`Pick at least ${MIN_INTERESTS} interests.`);
     if (!form.province || !form.city) return setError("Choose your province and city.");
     if (photos.length < 1) return setError("Keep at least 1 photo that clearly shows your face.");
+    const tiktok_username = normalizeTikTokUsername(form.tiktok_username);
+    if (tiktok_username === null) return setError("Enter a valid TikTok username or profile link.");
     setError(""); setNotice(null); setBusy(true);
     try {
       const urls = await Promise.all(photos.map((p, i) => (p.file ? uploadPhoto(user.uid, p.file, i) : p.url)));
-      const saved = await updateProfile({ ...form, photo_urls: urls, profile_photo: urls[0] });
+      const saved = await updateProfile({ ...form, tiktok_username, photo_urls: urls, profile_photo: urls[0] });
       const lostBadge = verified && !saved.verified;
       setForm(saved);
       setVerified(saved.verified);
@@ -140,6 +143,10 @@ export default function EditProfile() {
         <Field label="I'm looking for" as="select" value={form.looking_for} onChange={(e) => set({ looking_for: e.target.value })}>
           {LOOKING_FOR.map((g) => <option key={g}>{g}</option>)}
         </Field>
+        <Field label="TikTok username (optional)" value={form.tiktok_username || ""} maxLength={100}
+          placeholder="@username or profile link"
+          hint="Matches can use the 🤟 link on your profile to visit TikTok."
+          onChange={(e) => set({ tiktok_username: e.target.value })} />
         <Field label="Bio" as="textarea" rows={4} maxLength={300} value={form.bio} hint={`${form.bio.length}/300`}
           onChange={(e) => set({ bio: e.target.value })} />
 

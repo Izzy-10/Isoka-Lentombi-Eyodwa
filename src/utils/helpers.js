@@ -7,6 +7,25 @@ export function normalizeZAPhone(input) {
   return null;
 }
 
+export function normalizeTikTokUsername(input) {
+  const value = String(input || "").trim();
+  if (!value) return "";
+
+  let username = value;
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const url = new URL(value);
+      if (!/(^|\.)tiktok\.com$/i.test(url.hostname)) return null;
+      username = url.pathname.split("/").filter(Boolean)[0] || "";
+    } catch {
+      return null;
+    }
+  }
+
+  username = username.replace(/^@/, "");
+  return /^[A-Za-z0-9._]{1,24}$/.test(username) ? username : null;
+}
+
 export function ageFromDob(dob) {
   if (!dob) return 0;
   const d = new Date(dob);
