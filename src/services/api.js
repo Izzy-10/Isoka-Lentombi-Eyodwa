@@ -1,8 +1,12 @@
 import { auth } from "./firebase.js";
 
-const API = import.meta.env.DEV
-  ? (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "")
-  : "";
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+const SAME_ORIGIN_API_PATHS = new Set(["/api/profiles/me", "/api/payments/me"]);
+
+function apiBaseFor(path) {
+  if (import.meta.env.DEV) return API_URL;
+  return SAME_ORIGIN_API_PATHS.has(path.split("?")[0]) ? "" : API_URL;
+}
 
 async function authed(path, options = {}) {
   const user = auth.currentUser;
@@ -21,9 +25,10 @@ async function authed(path, options = {}) {
     throw error;
   }
 
+  const apiBase = apiBaseFor(path);
   let res;
   try {
-    res = await fetch(`${API}${path}`, {
+    res = await fetch(`${apiBase}${path}`, {
       ...options,
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...options.headers },
     });
@@ -35,7 +40,8 @@ async function authed(path, options = {}) {
 
   if (res.status === 204) return null;
   if (!res.headers.get("content-type")?.includes("json")) {
-    const error = new Error("The API returned a web page instead of data. Check that this deployment includes the profile API.");
+    const apiSource = apiBase ? "the configured API server" : "this deployment";
+    const error = new Error(`${apiSource} returned a web page instead of JSON for ${path.split("?")[0]}. Check that the route is deployed.`);
     error.status = 502;
     throw error;
   }

@@ -41,7 +41,7 @@ service firebase.storage {
 `/` -> `/login` -> `/onboarding/profile -> photos -> interests -> location` -> `/discover`
 
 ## Notes
-- Profile saves use the Vercel API at `PUT /api/profiles/me`. It verifies Firebase ID tokens and stores profile data in Neon. Vercel deployments call the API on the same origin; `VITE_API_URL` is only used by the local Vite preview.
+- Profile saves use the Vercel API at `PUT /api/profiles/me`. It verifies Firebase ID tokens and stores profile data in Neon. In production, the profile and billing endpoints implemented in this repo use same-origin Vercel functions; other API flows (including Discover and swipes) use the external backend configured by `VITE_API_URL`. Local Vite development uses `VITE_API_URL` for API calls.
 - Photos upload to Firebase Storage under `users/{uid}/photos/`.
 - 18+ is enforced by date of birth in step 1. Re-check it on the backend too.
 
