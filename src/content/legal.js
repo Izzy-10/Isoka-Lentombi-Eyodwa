@@ -86,7 +86,7 @@ export const privacy = {
       p: [
         "Under POPIA you can:",
         "• Ask what information we hold about you and get a copy. Use Settings → Download my data.",
-        `• Correct information that is wrong. Use Settings → Edit profile. Your date of birth is locked, so email ${EMAIL} if it is wrong.`,
+        `• Correct information that is wrong. Use Settings → Manage my profile. Your date of birth is locked, so email ${EMAIL} if it is wrong.`,
         "• Ask us to delete your information. Use Settings → Delete my account.",
         "• Object to how we use your information, or withdraw your consent. Withdrawing consent means we can no longer provide Isoka to you.",
         "If you think we have handled your information unlawfully, you can complain to the Information Regulator (South Africa): inforegulator.org.za, POPIAComplaints@inforegulator.org.za, 010 023 5200.",
