@@ -23,8 +23,11 @@ export default function Discover() {
   const load = useCallback(async () => {
     try {
       const d = await getDiscover();
+      if (!d || !Array.isArray(d.results)) {
+        throw new Error("We couldn’t load profiles right now. Please try again.");
+      }
       setQueue((q) => merge(q, d.results));
-      setLeft(d.swipes_left);
+      setLeft(d.swipes_left ?? null);
       setLimitHit(d.swipes_left === 0);
       setStatus("ready");
     } catch (e) {
